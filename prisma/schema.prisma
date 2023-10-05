@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model agendas {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  cliente_id  BigInt    @db.UnsignedBigInt
+  datahora    DateTime  @db.DateTime(0)
+  servico     String    @db.VarChar(50)
+  detalhes    String    @db.Text
+  tecnico     String    @db.VarChar(50)
+  status      Int       @default(1) @db.TinyInt
+  observacoes String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+  clientes    clientes  @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "agendas_cliente_id_foreign")
+  @@index([cliente_id], map: "agendas_cliente_id_foreign")
+}
+
+model clientes {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  cpf         String    @db.VarChar(50)
+  nascimento  DateTime? @db.Date
+  nome        String    @db.VarChar(50)
+  email       String    @db.VarChar(50)
+  cep         String    @db.VarChar(20)
+  uf          String    @db.VarChar(20)
+  cidade      String    @db.VarChar(50)
+  bairro      String    @db.VarChar(50)
+  endereco    String    @db.VarChar(80)
+  complemento String?   @db.VarChar(20)
+  telefone    String    @db.VarChar(20)
+  contato     String?   @db.VarChar(50)
+  telcontato  String?   @db.VarChar(20)
+  obs         String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+  agendas     agendas[]
+  ordens      ordens[]
+}
+
+model email {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  servidor   String?   @db.VarChar(50)
+  porta      String?   @db.VarChar(50)
+  seguranca  String?   @db.VarChar(50)
+  usuario    String?   @db.VarChar(50)
+  senha      String?   @db.VarChar(50)
+  assunto    String?   @db.VarChar(60)
+  mensagem   String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model empresa {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  empresa    String?   @db.VarChar(50)
+  razao      String?   @db.VarChar(50)
+  cnpj       String?   @db.VarChar(50)
+  logo       String?   @db.VarChar(100)
+  endereco   String?   @db.VarChar(50)
+  bairro     String?   @db.VarChar(50)
+  uf         String?   @db.VarChar(50)
+  cidade     String?   @db.VarChar(50)
+  cep        String?   @db.VarChar(50)
+  telefone   String?   @db.VarChar(50)
+  site       String?   @db.VarChar(50)
+  email      String?   @db.VarChar(50)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model imagens {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  ordem_id   BigInt    @db.UnsignedBigInt
+  imagem     String    @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+  ordens     ordens    @relation(fields: [ordem_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "imagens_ordem_id_foreign")
+
+  @@index([ordem_id], map: "imagens_ordem_id_foreign")
+}
+
+model impressoes {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  entrada    String?   @db.Text
+  saida      String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model mensagens {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  remetente    String    @db.VarChar(50)
+  destinatario String    @db.VarChar(50)
+  mensagem     String    @db.Text
+  status       Int?      @default(1) @db.TinyInt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model notificacoes {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  entrada    String?   @db.Text
+  saida      String?   @db.Text
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model ordens {
+  id              BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  cliente_id      BigInt    @db.UnsignedBigInt
+  equipamento     String    @db.VarChar(40)
+  modelo          String?   @db.VarChar(50)
+  senha           String    @db.VarChar(50)
+  defeito         String    @db.Text
+  estado          String    @db.VarChar(100)
+  acessorios      String?   @db.Text
+  orcamento       Int?
+  descorcamento   String?   @db.Text
+  detalhes        String?   @db.Text
+  pecas           String?   @db.Text
+  valpecas        Decimal?  @db.Decimal(6, 2)
+  valservico      Decimal?  @db.Decimal(6, 2)
+  custo           Decimal?  @db.Decimal(6, 2)
+  previsao        String?   @db.VarChar(255)
+  statusorcamento Int?      @db.TinyInt
+  concluido       Int?      @db.TinyInt
+  comunicado      Int?      @db.TinyInt
+  entrega         Int?      @db.TinyInt
+  dtentrega       DateTime? @db.DateTime(0)
+  tecnico         Int?
+  status          Int       @default(1) @db.TinyInt
+  envioemail      Boolean?
+  observacoes     String?   @db.Text
+  imagens         imagens[]
+  clientes        clientes  @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "ordens_cliente_id_foreign")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+
+  @@index([cliente_id], map: "ordens_cliente_id_foreign")
+}
+
+model password_reset_tokens {
+  email      String    @id @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model personal_access_tokens {
+  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  tokenable_type String    @db.VarChar(255)
+  tokenable_id   BigInt    @db.UnsignedBigInt
+  name           String    @db.VarChar(255)
+  token          String    @unique(map: "personal_access_tokens_token_unique") @db.VarChar(64)
+  abilities      String?   @db.Text
+  last_usedAt   DateTime? @db.Timestamp(0)
+  expiresAt     DateTime? @db.Timestamp(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+
+  @@index([tokenable_type, tokenable_id], map: "personal_access_tokens_tokenable_type_tokenable_id_index")
+}
+
+model produtos {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  codbarra   String?   @db.Text
+  descricao  String    @db.VarChar(255)
+  movimento  Int       @db.TinyInt
+  valcompra  Float
+  valvenda   Float
+  unidade    Int       @db.TinyInt
+  estmaximo  String    @db.VarChar(255)
+  estminimo  String    @db.VarChar(255)
+  tipo       Int       @db.TinyInt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
+
+model users {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name              String    @db.VarChar(255)
+  email             String    @unique @db.VarChar(255)
+  password          String    @db.VarChar(255)
+  role              Int       @db.TinyInt
+  status            Int       @db.TinyInt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+}
