@@ -37,11 +37,11 @@ export default async function RootLayout({ children }: LayoutProps) {
     <html lang="en">
       <body className={`${roboto.variable}`}>
         <Providers>
-          <main className="flex min-h-screen flex-row bg-white">
+          <main className="flex min-h-screen flex-row bg-gray-middle">
             <Sidebar />
             <div className="-ml-[280px] flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0">
               <Header />
-              <div className="flex h-full items-start justify-start bg-gray-light">
+              <div className="w-full flex h-full items-start justify-start p4">
                 {children}
               </div>
               <Footer />

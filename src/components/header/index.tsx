@@ -2,9 +2,9 @@ import LogoutBtn from "@/components/buttons/LogoutBtn"
 
 const Header = () => {
   return (
-    <header className="border-b-2 border-gray-middle">
-        <div>nav</div>
-        <LogoutBtn />
+    <header className="flex items-center justify-between h-[65px] bg-white shadow-sm">
+      <div>nav</div>
+      <LogoutBtn />
     </header>
   )
 }
