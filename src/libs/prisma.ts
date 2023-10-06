@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-
 declare global {
   var prisma: PrismaClient | undefined;
 }
@@ -8,8 +7,6 @@ declare global {
 export const prisma = global.prisma || new PrismaClient();
 
 if (process.env.NODE !== "production") global.prisma = prisma;
-
-
 
 declare global {
     interface BigInt {

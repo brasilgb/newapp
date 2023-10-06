@@ -23,7 +23,7 @@ const SideNavigation = () => {
             className="list-item"
           >
             <Link
-              className={`flex items-center py-2 px-4  transition-colors gap-3 rounded ${pathname === link.path ? 'bg-blue-500 text-white' : ''}`}
+              className={`flex items-center py-2 px-4 transition-colors gap-3 rounded ${pathname === link.path ? 'bg-blue-middle text-white' : 'text-white'}`}
               href={link.path}
               title={link.title}
             >

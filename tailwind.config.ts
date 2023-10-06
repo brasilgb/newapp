@@ -12,11 +12,11 @@ const config: Config = {
         roboto: ['var(--font-roboto)'],
       },
       colors: {
-        'screen-login': '#264160',
+        'screen-login': '#1B2335',
         'blue': {
           light: '#253C53',
-          middle: '#263e59',
-          dark: '#1a3b60'
+          middle: '#293751',
+          dark: '#1C2537'
         },
         gray: {
           light: '#FCFBFA',
