@@ -5,7 +5,7 @@ import Link from "next/link"
 import { AiOutlineDashboard } from 'react-icons/ai';
 import { usePathname } from "next/navigation";
 
-const SideNavigation = () => {
+const SideNavigation = ({ opened }: any) => {
   const pathname = usePathname();
 
   const getIcon = (icone: any) => {
@@ -23,11 +23,12 @@ const SideNavigation = () => {
             className="list-item"
           >
             <Link
-              className={`flex items-center py-2 px-4 transition-colors gap-3 rounded ${pathname === link.path ? 'bg-blue-middle text-white' : 'text-white'}`}
+              className={`flex items-center py-2 gap-x-4 transition-colors rounded ${opened} ${pathname === link.path ? 'bg-blue-middle text-white' : 'text-white'} `}
               href={link.path}
               title={link.title}
             >
-              <span>{getIcon(link.label)}</span> <span>{link.label}</span>
+              <span className="block float-left">{getIcon(link.label)}</span> 
+              <span className={`duration-300 ${!opened && 'hidden'}`}>{link.label}</span>
             </Link>
           </li>
         ))}
