@@ -39,7 +39,7 @@ export default async function RootLayout({ children }: LayoutProps) {
         <Providers>
           <main className="flex min-h-screen flex-row bg-gray-middle">
             <Sidebar />
-            <div className="-ml-[280px] flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0">
+            <div className="flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0">
               <Header />
               <div className="w-full flex h-full items-start justify-start p4">
                 {children}
