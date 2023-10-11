@@ -16,6 +16,12 @@
   h6 {
       @apply font-roboto;
   }
+  .font-outline-404 {
+    -webkit-text-stroke: 2px #FCFBFA;
+  }
+  .font-outline-4 {
+    -webkit-text-stroke: 4px #293751;
+  }
 }
 
 @layer components {

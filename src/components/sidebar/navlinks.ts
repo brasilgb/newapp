@@ -7,9 +7,9 @@ export const navlinks = [
         urlSegment: ''
     },
     {
-        label: 'Link 2',
-        path: '/2',
-        title: 'Link 2'
+        label: 'Dashboard',
+        path: '/clientes',
+        title: 'Clientes'
     },
     {
         label: 'Link 3',

@@ -20,9 +20,10 @@ const config: Config = {
         },
         gray: {
           light: '#FCFBFA',
-          middle: '#F6F7F9'
+          middle: '#F6F7F9',
+          dark: '#ddd'
         }
-      },
+      }
     },
   },
   plugins: [],

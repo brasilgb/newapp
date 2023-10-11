@@ -10,7 +10,7 @@ const SideNavigation = ({ opened }: any) => {
 
   const getIcon = (icone: any) => {
     switch (icone) {
-      case 'Dashboard': return <AiOutlineDashboard size={18} />;
+      case 'Dashboard': return <AiOutlineDashboard size={20} />;
     }
   }
 
@@ -23,12 +23,12 @@ const SideNavigation = ({ opened }: any) => {
             className="list-item"
           >
             <Link
-              className={`flex items-center py-2 gap-x-4 transition-colors rounded ${opened} ${pathname === link.path ? 'bg-blue-middle text-white' : 'text-white'} `}
+              className={`flex items-center h-10 px-2.5 gap-x-3 transition-colors rounded ${pathname === link.path ? 'bg-blue-middle text-white' : 'text-white'} `}
               href={link.path}
               title={link.title}
             >
               <span className="block float-left">{getIcon(link.label)}</span> 
-              <span className={`duration-300 ${!opened && 'hidden'}`}>{link.label}</span>
+              <span className={`duration-300  ${!opened && 'hidden'}`}>{link.label}</span>
             </Link>
           </li>
         ))}
