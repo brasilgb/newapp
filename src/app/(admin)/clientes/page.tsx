@@ -1,5 +1,7 @@
 import PaginationControls from "@/components/PaginationControls"
 import { BoxContent, BoxFooter, BoxHeader, BoxMain } from "@/components/boxes"
+import DeleteButton from "@/components/buttons/DeleteButton"
+import EditButton from "@/components/buttons/EditButton"
 import NewButton from "@/components/buttons/NewButton"
 import SearchForm from "@/components/form/SearchForm"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/table"
@@ -50,6 +52,7 @@ const Clientes = async ({
                             <TableHead>E-mail</TableHead>
                             <TableHead>Telefone</TableHead>
                             <TableHead>Cadastro</TableHead>
+                            <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -59,6 +62,10 @@ const Clientes = async ({
                                 <TableCell>{cliente.email}</TableCell>
                                 <TableCell>{cliente.telefone}</TableCell>
                                 <TableCell className="pr-4">{moment(cliente.createdAt).format("DD/MM/YYYY")}</TableCell>
+                                <TableCell>
+                                    <EditButton label={""} path={""}/>
+                                    <DeleteButton label={""} path={""}/>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
