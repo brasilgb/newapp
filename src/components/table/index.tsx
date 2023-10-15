@@ -32,7 +32,7 @@ export const TableBody = ({ children }: TableProps) => {
 
 export const TableRow = ({ children, className, key }: TableProps) => {
     return (
-        <tr key={key} className={`${className}`}>
+        <tr className={`${className}`}>
             {children}
         </tr>
     )

@@ -1,3 +1,4 @@
+import PaginationControls from "@/components/PaginationControls"
 import { BoxContent, BoxFooter, BoxHeader, BoxMain } from "@/components/boxes"
 import NewButton from "@/components/buttons/NewButton"
 import SearchForm from "@/components/form/SearchForm"
@@ -21,9 +22,20 @@ interface ClientesProps {
     createdAt: string
 }
 
-const Clientes = async () => {
+const Clientes = async ({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | string[] | undefined }
+}) => {
     const clientes = await getClientes();
+    const page = searchParams['page'] ?? '1'
+    const per_page = searchParams['per_page'] ?? '5'
 
+    // mocked, skipped and limited in the real app
+    const start = (Number(page) - 1) * Number(per_page) // 0, 5, 10 ...
+    const end = start + Number(per_page) // 5, 10, 15 ...
+
+    const results = clientes.slice(start, end)
     return (
         <BoxMain>
             <BoxHeader>
@@ -41,7 +53,7 @@ const Clientes = async () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {clientes.map((cliente: ClientesProps, idx: number) => (
+                        {results.map((cliente: ClientesProps, idx: number) => (
                             <TableRow key={idx}>
                                 <TableCell className="pl-4 text-gray-700 font-medium">{cliente.nome}</TableCell>
                                 <TableCell>{cliente.email}</TableCell>
@@ -53,7 +65,10 @@ const Clientes = async () => {
                 </Table>
             </BoxContent>
             <BoxFooter>
-                <h1>Paginação</h1>
+                <PaginationControls
+                    hasNextPage={end < clientes.length}
+                    hasPrevPage={start > 0}
+                />
             </BoxFooter>
         </BoxMain>
     )
