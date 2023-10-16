@@ -62,9 +62,9 @@ const Clientes = async ({
                                 <TableCell>{cliente.email}</TableCell>
                                 <TableCell>{cliente.telefone}</TableCell>
                                 <TableCell className="pr-4">{moment(cliente.createdAt).format("DD/MM/YYYY")}</TableCell>
-                                <TableCell>
-                                    <EditButton label={""} path={""}/>
-                                    <DeleteButton label={""} path={""}/>
+                                <TableCell className="flex items-center justify-end pr-3 gap-2">
+                                    <EditButton label={""} path={""} />
+                                    <DeleteButton label={""} path={""} />
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -75,6 +75,7 @@ const Clientes = async ({
                 <PaginationControls
                     hasNextPage={end < clientes.length}
                     hasPrevPage={start > 0}
+                    hasLength={clientes.length}
                 />
             </BoxFooter>
         </BoxMain>

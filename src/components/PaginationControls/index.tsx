@@ -6,37 +6,39 @@ import { useRouter, useSearchParams } from 'next/navigation'
 interface PaginationControlsProps {
     hasNextPage: boolean
     hasPrevPage: boolean
+    hasLength: number;
 }
 
 const PaginationControls: FC<PaginationControlsProps> = (
     {
         hasNextPage,
         hasPrevPage,
+        hasLength,
     }
 ) => {
     const router = useRouter()
     const searchParams = useSearchParams()
 
     const page = searchParams.get('page') ?? '1'
-    const per_page = searchParams.get('per_page') ?? '10'
+    const per_page = searchParams.get('per_page') ?? '5'
 
     return (
-        <div className='flex gap-2'>
+        <div className='flex items-center justify-center w-full gap-2'>
             <button
-                className='bg-blue-500 text-white p-1'
+                className='text-blue-dark py-1.5 px-3 text-sm'
                 disabled={!hasPrevPage}
                 onClick={() => {
                     router.push(`/clientes?page=${Number(page) - 1}&per_page=${per_page}`)
                 }}>
-                Anteriror
+                Anterior
             </button>
 
-            <div>
-                {page} / {Math.ceil(10 / Number(per_page))}
+            <div className='text-sm'>
+                {page} / {Math.ceil(hasLength / Number(per_page))}
             </div>
 
             <button
-                className='bg-blue-500 text-white p-1'
+                className='text-blue-dark py-1.5 px-3 text-sm'
                 disabled={!hasNextPage}
                 onClick={() => {
                     router.push(`/clientes?page=${Number(page) + 1}&per_page=${per_page}`)
