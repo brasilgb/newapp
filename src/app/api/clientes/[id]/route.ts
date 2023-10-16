@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/libs/prisma";
 
-export function GET() {
-    return NextResponse.json({
-        'message': "Listar um usuário ..."
-    })
+export async function GET(request: Request,
+    { params }: { params: { id: number } }) {
+
+    const id = params?.id
+
+    const user = await prisma.clientes.findMany({
+        where: {
+            id: id
+        }
+    });
+    return NextResponse.json(user)
 }
 
 export function DELETE() {

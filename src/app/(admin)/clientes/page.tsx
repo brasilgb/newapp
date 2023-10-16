@@ -63,7 +63,7 @@ const Clientes = async ({
                                 <TableCell>{cliente.telefone}</TableCell>
                                 <TableCell className="pr-4">{moment(cliente.createdAt).format("DD/MM/YYYY")}</TableCell>
                                 <TableCell className="flex items-center justify-end pr-3 gap-2">
-                                    <EditButton label={""} path={""} />
+                                    <EditButton label={""} path={`/clientes/${cliente.id}`} />
                                     <DeleteButton label={""} path={""} />
                                 </TableCell>
                             </TableRow>

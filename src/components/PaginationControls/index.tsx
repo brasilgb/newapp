@@ -25,23 +25,23 @@ const PaginationControls: FC<PaginationControlsProps> = (
     return (
         <div className='flex items-center justify-center w-full gap-2'>
             <button
-                className='text-blue-dark py-1.5 px-3 text-sm'
+                className='text-gray-600 py-1.5 px-3 text-sm'
                 disabled={!hasPrevPage}
                 onClick={() => {
-                    router.push(`/clientes?page=${Number(page) - 1}&per_page=${per_page}`)
+                    router.push(`/clientes?page=${Number(page) - 1}`)
                 }}>
                 Anterior
             </button>
 
-            <div className='text-sm'>
-                {page} / {Math.ceil(hasLength / Number(per_page))}
+            <div className='text-sm text-gray-600 border rounded-full py-1 px-2'>
+                {page} de {Math.ceil(hasLength / Number(per_page))}
             </div>
 
             <button
-                className='text-blue-dark py-1.5 px-3 text-sm'
+                className='text-gray-600 py-1.5 px-3 text-sm'
                 disabled={!hasNextPage}
                 onClick={() => {
-                    router.push(`/clientes?page=${Number(page) + 1}&per_page=${per_page}`)
+                    router.push(`/clientes?page=${Number(page) + 1}`)
                 }}>
                 Próximo
             </button>
