@@ -6,12 +6,12 @@ export async function GET(request: Request,
 
     const id = params?.id
 
-    const user = await prisma.clientes.findMany({
+    const cliente = await prisma.clientes.findMany({
         where: {
             id: id
         }
     });
-    return NextResponse.json(user)
+    return NextResponse.json(cliente)
 }
 
 export function DELETE() {

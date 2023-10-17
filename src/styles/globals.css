@@ -34,4 +34,10 @@
   .error-message {
     @apply bg-yellow-100 text-sm p-2 text-red-500 rounded border border-red-200
   }
+  .label-form {
+    @apply text-base text-gray-500 font-medium
+  }
+  .input-form {
+    @apply rounded-md p-2 bg-transparent text-base text-gray-600 border border-gray-300
+  }
 }

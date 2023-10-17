@@ -1,29 +1,35 @@
 
+import { BoxContent, BoxFooter, BoxHeader, BoxMain } from "@/components/boxes"
+import EditForm from "@/components/form/clientes/EditForm"
 import React from 'react'
 
-export function async () {
-    
-}
-interface ClienteProps {
-    params: { id: number }
+export function async() {
+
 }
 
-async function getClientes({ params }: ClienteProps) {
-    const res = await fetch(`http://localhost:3000/api/clientes/${params.id}`)
+async function getClientes(id: any) {
+    const res = await fetch(`http://localhost:3000/api/clientes/${id}`)
     if (!res.ok) {
         throw new Error('Failed to fetch data')
     }
     return res.json()
 }
 
-const EditCliente = () => {
 
-const clientes = getClientes();
-console.log(JSON.stringify(clientes))
+interface ClienteProps {
+    params: { id: number }
+}
+const EditCliente = async ({ params }: ClienteProps) => {
+
+    const clientes = await getClientes(params.id);
+
     return (
-        <div>
-        
-        </div>
+        <BoxMain>
+            <BoxHeader>
+                header
+            </BoxHeader>
+            <EditForm data={clientes} />
+        </BoxMain>
     )
 }
 export default EditCliente
