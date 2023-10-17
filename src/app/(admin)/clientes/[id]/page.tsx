@@ -5,15 +5,24 @@ export function async () {
     
 }
 interface ClienteProps {
-    params: { id: string }
+    params: { id: number }
 }
 
-const EditCliente = ({ params }: ClienteProps) => {
+async function getClientes({ params }: ClienteProps) {
+    const res = await fetch(`http://localhost:3000/api/clientes/${params.id}`)
+    if (!res.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    return res.json()
+}
 
+const EditCliente = () => {
 
+const clientes = getClientes();
+console.log(JSON.stringify(clientes))
     return (
         <div>
-        {params.id}
+        
         </div>
     )
 }
