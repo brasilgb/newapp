@@ -1,11 +1,11 @@
-import SidebarRender from "./SidebarRender"
+import SidebarRender from './SidebarRender';
 
 const Sidebar = () => {
-  return (
-    <>
-      <SidebarRender />
-    </>
-  )
-}
+    return (
+        <>
+            <SidebarRender />
+        </>
+    );
+};
 
-export default Sidebar
+export default Sidebar;

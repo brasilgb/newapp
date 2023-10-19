@@ -1,14 +1,14 @@
-'use client'
-import Link from "next/link"
-import React from 'react'
-import { MdDelete } from 'react-icons/md'
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import {MdDelete} from 'react-icons/md';
 
 interface NewBtnProps {
     label: string;
     path: string;
 }
 
-const DeleteButton = ({ label, path }: NewBtnProps) => {
+const DeleteButton = ({label, path}: NewBtnProps) => {
     return (
         <div className="">
             <Link
@@ -19,7 +19,7 @@ const DeleteButton = ({ label, path }: NewBtnProps) => {
                 {label}
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default DeleteButton
+export default DeleteButton;

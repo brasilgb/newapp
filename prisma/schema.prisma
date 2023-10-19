@@ -25,7 +25,7 @@ model agendas {
 model clientes {
   id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   cpf         String    @db.VarChar(50)
-  nascimento  DateTime? @db.Date
+  nascimento  String?   @db.VarChar(10)
   nome        String    @db.VarChar(50)
   email       String    @db.VarChar(50)
   cep         String    @db.VarChar(20)

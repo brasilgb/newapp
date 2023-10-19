@@ -1,6 +1,6 @@
-'use client'
-import React from 'react'
-import { MdAdd } from 'react-icons/md'
+'use client';
+import React from 'react';
+import {MdAdd} from 'react-icons/md';
 
 const SaveButton = () => {
     return (
@@ -11,7 +11,7 @@ const SaveButton = () => {
             <MdAdd size={16} />
             Salvar
         </button>
-    )
-}
+    );
+};
 
-export default SaveButton
+export default SaveButton;

@@ -1,14 +1,14 @@
-'use client'
-import Link from "next/link"
-import React from 'react'
-import { MdAdd } from 'react-icons/md'
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import {MdAdd} from 'react-icons/md';
 
 interface NewBtnProps {
     label: string;
     path: string;
 }
 
-const NewButton = ({ label, path }: NewBtnProps) => {
+const NewButton = ({label, path}: NewBtnProps) => {
     return (
         <div className="">
             <Link
@@ -19,7 +19,7 @@ const NewButton = ({ label, path }: NewBtnProps) => {
                 {label}
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default NewButton
+export default NewButton;

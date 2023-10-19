@@ -1,14 +1,14 @@
-'use client'
-import Link from "next/link"
-import React from 'react'
-import { BiEdit } from 'react-icons/bi'
+'use client';
+import Link from 'next/link';
+import React from 'react';
+import {BiEdit} from 'react-icons/bi';
 
 interface NewBtnProps {
     label: string;
     path: string;
 }
 
-const EditButton = ({ label, path }: NewBtnProps) => {
+const EditButton = ({label, path}: NewBtnProps) => {
     return (
         <div className="">
             <Link
@@ -19,7 +19,7 @@ const EditButton = ({ label, path }: NewBtnProps) => {
                 {label}
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default EditButton
+export default EditButton;

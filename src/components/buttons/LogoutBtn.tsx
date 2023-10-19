@@ -1,18 +1,15 @@
-'use client'
-import { signOut } from "next-auth/react"
-import React from 'react'
+'use client';
+import {signOut} from 'next-auth/react';
+import React from 'react';
 
-type Props = {}
+type Props = {};
 
 const LogoutBtn = (props: Props) => {
     return (
-        <button 
-        onClick={() => signOut() }
-        className=".btn-login"
-        >
+        <button onClick={() => signOut()} className=".btn-login">
             Sair
         </button>
-    )
-}
+    );
+};
 
-export default LogoutBtn
+export default LogoutBtn;
