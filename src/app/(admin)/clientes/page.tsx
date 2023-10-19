@@ -1,5 +1,5 @@
 import PaginationControls from '@/components/PaginationControls';
-import { BoxContent, BoxFooter, BoxHeader, BoxMain } from '@/components/boxes';
+import {BoxContent, BoxFooter, BoxHeader, BoxMain} from '@/components/boxes';
 import DeleteButton from '@/components/buttons/DeleteButton';
 import EditButton from '@/components/buttons/EditButton';
 import NewButton from '@/components/buttons/NewButton';
@@ -15,8 +15,8 @@ import {
 import moment from 'moment';
 import React from 'react';
 
-async function getClientes(page: any, limit: any) {
-    const res = await fetch(`http://localhost:3000/api/clientes?page=${page}&limit=${limit}`);
+async function getClientes() {
+    const res = await fetch('http://localhost:3000/api/clientes');
     if (!res.ok) {
         throw new Error('Failed to fetch data');
     }
@@ -34,14 +34,18 @@ interface ClientesProps {
 const Clientes = async ({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: {[key: string]: string | string[] | undefined};
 }) => {
+    const clientes = await getClientes();
 
-    const page = searchParams['page'] ?? '2';
-    const limit = searchParams['per_page'] ?? '5';
+    const page = searchParams['page'] ?? '1';
+    const per_page = searchParams['per_page'] ?? '5';
 
-    const result = await getClientes(page, limit);
+    // mocked, skipped and limited in the real app
+    const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
+    const end = start + Number(per_page); // 5, 10, 15 ...
 
+    const res = clientes.slice(start, end);
     return (
         <BoxMain>
             <BoxHeader>
@@ -60,7 +64,7 @@ const Clientes = async ({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {result.clientes.map((cliente: ClientesProps) => (
+                        {res.map((cliente: ClientesProps) => (
                             <TableRow>
                                 <TableCell className="pl-4 text-gray-700 font-medium">
                                     {cliente.nome}
@@ -86,11 +90,9 @@ const Clientes = async ({
             </BoxContent>
             <BoxFooter>
                 <PaginationControls
-                    hasNextPage={result.clientes.length}
-                    hasPrevPage={0}
-                    hasLength={result.clientes.length}
-                    page={page}
-                    limit={limit}
+                    hasNextPage={end < clientes.length}
+                    hasPrevPage={start > 0}
+                    hasLength={clientes.length}
                 />
             </BoxFooter>
         </BoxMain>
