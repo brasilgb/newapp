@@ -5,24 +5,22 @@ import React from 'react';
 export function async() {}
 
 async function getCliente(id: any) {
-    const res = await fetch(`http://localhost:3000/api/clientes/${id}`);
+    const res = await fetch(`http://localhost:3000/api/clientes/${id}`, {
+        cache: 'no-store',
+    });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
     }
     return res.json();
 }
 
-interface ClienteProps {
-    params: {id: number};
-}
-const EditCliente = async ({params}: ClienteProps) => {
-    
-    const data = await getCliente(params.id);
+const EditCliente = async ({params}: {params: {id: number}}) => {
+    const {cliente} = await getCliente(params.id);
 
     return (
         <BoxMain>
             <BoxHeader>header</BoxHeader>
-            <EditForm cliente={data.data.cliente} />
+            <EditForm cliente={cliente} />
         </BoxMain>
     );
 };

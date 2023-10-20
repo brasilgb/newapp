@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/libs/prisma';
 
-
-export async function GET(request: Request,
-    { params }: { params: { id: number } }) {
+export async function GET(request: Request, { params }: { params: { id: number } }) {
     const id = params.id;
 
     const cliente = await prisma.clientes.findUnique({
@@ -11,39 +9,107 @@ export async function GET(request: Request,
             id,
         },
         include: {
-            ordens: true
-        }
+            ordens: true,
+        },
     });
 
     if (!cliente) {
         let error_response = {
-            status: "Falha",
-            message: "Não foi encontrado cliente com esta ID",
+            status: false,
+            cliente: [],
+            message: 'Não foi encontrado cliente com esta ID',
         };
         return new NextResponse(JSON.stringify(error_response), {
             status: 404,
-            headers: { "Content-Type": "applicatio/json" }
+            headers: { 'Content-Type': 'applicatio/json' },
         });
     }
 
     let json_response = {
-        status: "sucesso",
-        data: {
-            cliente,
-        },
+        status: true,
+        cliente,
+        message: 'Cliente encontrado com sucesso',
     };
 
     return NextResponse.json(json_response);
 }
 
-export function DELETE() {
-    return NextResponse.json({
-        message: 'Deleta um usuário ...',
-    });
+export async function PATCH(
+    request: Request,
+    { params }: { params: { id: number } },
+) {
+    try {
+        const id = params.id;
+        let json = await request.json();
+
+        const cliente = await prisma.clientes.update({
+            where: { id },
+            data: json,
+        });
+        let success = {
+            status: false,
+            message: "Sucesso",
+            cliente,
+        };
+        return new NextResponse(JSON.stringify(success), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    } catch (error: any) {
+        if (error.code === 'P2025') {
+            let err = {
+                status: false,
+                message: 'Não foi encontrado cliente com esta ID',
+                cliente: []
+            };
+            return new NextResponse(JSON.stringify(err), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        let err = {
+            status: false,
+            message: error.message,
+            cliente: []
+        };
+        return new NextResponse(JSON.stringify(err), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
 }
 
-export function PUT() {
-    return NextResponse.json({
-        message: 'Altera um usuário ...',
-    });
+export async function DELETE(
+    request: Request,
+    { params }: { params: { id: number } },
+) {
+    try {
+        const id = params.id;
+        await prisma.clientes.delete({
+            where: { id },
+        });
+
+        return new NextResponse(null, { status: 204 });
+    } catch (error: any) {
+        if (error.code === 'P2025') {
+            let err = {
+                status: 'Fail',
+                message: 'Não foi encontrado cliente com esta ID',
+            };
+            return new NextResponse(JSON.stringify(err), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        let err = {
+            status: 'error',
+            message: error.message,
+        };
+        return new NextResponse(JSON.stringify(err), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
 }

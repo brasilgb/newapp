@@ -1,26 +1,30 @@
 'use client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BoxContent, BoxFooter } from '@/components/boxes';
 import SaveButton from '@/components/buttons/SaveButton';
-import 'react-datepicker/dist/react-datepicker.css'
-import moment from "moment";
+import 'react-datepicker/dist/react-datepicker.css';
+import { ClientesProps } from '@/types/clientes';
+import { clientesSchema } from "./schema";
+import { z } from "zod";
 
-const schema = z.object({
-  cpf: z.string().nonempty('O CPF/CNPJ é obrigatório'),
-  nascimento: z.string(),
-  nome: z.string().nonempty('O nome é obrigatório'),
-  email: z
-    .string()
-    .nonempty('O e-mail é obrigatório')
-    .email('Formato de e-mail inválido'),
-});
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof clientesSchema>;
+
+async function setCliente(id: number, data: any) {
+  const res = await fetch(`http://localhost:3000/api/clientes/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    }
+  });
+  return res.json();
+}
+
 
 const EditForm = ({ cliente }: any) => {
-  const { cpf, nascimento, nome, email } = cliente;
+  const cli: ClientesProps = cliente;
   const {
     handleSubmit,
     reset,
@@ -28,17 +32,35 @@ const EditForm = ({ cliente }: any) => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      cpf: cpf,
-      nascimento: nascimento,
-      nome: nome,
-      email: email,
+      cpf: cli.cpf,
+      nascimento: cli.nascimento,
+      nome: cli.nome,
+      email: cli.email,
+      cep: cli.cep,
+      uf: cli.uf,
+      cidade: cli.cidade,
+      bairro: cli.bairro,
+      endereco: cli.endereco,
+      complemento: cli.complemento,
+      telefone: cli.telefone,
+      contato: cli.contato,
+      telcontato: cli.telcontato,
+      obs: cli.obs,
     },
     mode: 'onBlur',
-    resolver: zodResolver(schema),
+    resolver: zodResolver(clientesSchema),
   });
 
   const submitCliente = async (data: any) => {
-    console.log(data);
+    // console.log(cli.id, data);
+    const {status, cliente, message} = await setCliente(cli.id, data);
+
+    if (!status) {
+      console.log(message);
+    } else {
+      console.log(message);
+    }
+
   };
 
   return (
@@ -88,6 +110,7 @@ const EditForm = ({ cliente }: any) => {
               </div>
             )}
           </div>
+
           <div className="col-span-2 flex flex-col">
             <label className="label-form" htmlFor="email">
               E-mail
@@ -102,6 +125,151 @@ const EditForm = ({ cliente }: any) => {
                 {errors.email?.message}
               </div>
             )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-6 gap-4 mt-6">
+          <div className="flex flex-col">
+            <label className="label-form" htmlFor="cep">
+              CEP
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              {...register('cep')}
+            />
+            {errors.cep?.message && (
+              <div className="text-sm text-red-600">
+                {errors.cep?.message}
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <label className="label-form" htmlFor="uf">
+              UF
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              // value={'2023-10-05'}
+              {...register('uf')}
+            />
+          </div>
+          <div className="col-span-2 flex flex-col">
+            <label className="label-form" htmlFor="cidade">
+              Cidade
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              {...register('cidade')}
+            />
+            {errors.cidade?.message && (
+              <div className="text-sm text-red-600">
+                {errors.cidade?.message}
+              </div>
+            )}
+          </div>
+
+          <div className="col-span-2 flex flex-col">
+            <label className="label-form" htmlFor="bairro">
+              Bairro
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              {...register('bairro')}
+            />
+            {errors.bairro?.message && (
+              <div className="text-sm text-red-600">
+                {errors.bairro?.message}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 mt-6">
+          <div className="flex flex-col col-span-2">
+            <label className="label-form" htmlFor="endereco">
+              Endereço
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              {...register('endereco')}
+            />
+            {errors.endereco?.message && (
+              <div className="text-sm text-red-600">
+                {errors.endereco?.message}
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <label className="label-form" htmlFor="complemento">
+              Complemento
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              // value={'2023-10-05'}
+              {...register('complemento')}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4 gap-4 mt-6">
+          <div className="flex flex-col">
+            <label className="label-form" htmlFor="telefone">
+              Telefone
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              {...register('telefone')}
+            />
+            {errors.telefone?.message && (
+              <div className="text-sm text-red-600">
+                {errors.telefone?.message}
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col col-span-2">
+            <label className="label-form" htmlFor="contato">
+              Contato
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              {...register('contato')}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="label-form" htmlFor="telcontato">
+              Telefone de contato
+            </label>
+            <input
+              className="input-form"
+              type="text"
+              // value={'2023-10-05'}
+              {...register('telcontato')}
+            />
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <div className="flex flex-col">
+            <label className="label-form" htmlFor="obs">
+              Observações
+            </label>
+            <textarea
+              className="input-form"
+              // value={'2023-10-05'}
+              {...register('obs')}
+            />
           </div>
         </div>
       </BoxContent>

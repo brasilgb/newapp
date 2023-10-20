@@ -23,7 +23,6 @@ export const metadata: Metadata = {
 interface LayoutProps {
     children: React.ReactNode;
 }
-export const revalidate = 0;
 
 export default async function RootLayout({children}: LayoutProps) {
     const session = await getServerSession();

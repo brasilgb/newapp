@@ -48,7 +48,6 @@ const SignInForm = () => {
             setLoadingSignIn(false);
             setErrorInLogging('E-mail e/ou senha inválidos, tente novamente');
         } else {
-            // reset();
             router.push('/');
         }
     };
