@@ -3,6 +3,9 @@ import {NextRequest, NextResponse} from 'next/server';
 
 export async function GET(request: NextRequest) {
     const clientes = await prisma.clientes.findMany({
+        orderBy: {
+            id: 'desc'
+        },
         include: {
             ordens: true,
         },
@@ -20,7 +23,8 @@ export async function POST(request: Request) {
         });
 
         let json_response = {
-            status: 'sucesso',
+            status: true,
+            message: 'Cliente cadastrado com sucesso',
             cliente,
         };
         return new NextResponse(JSON.stringify(json_response), {
@@ -30,8 +34,9 @@ export async function POST(request: Request) {
     } catch (error: any) {
         if (error.code === 'P2002') {
             let err = {
-                status: 'falha',
+                status: false,
                 message: 'Já existe cliente com este email',
+                cliente: []
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 409,

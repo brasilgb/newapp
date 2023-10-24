@@ -47,8 +47,8 @@ export async function PATCH(
             data: json,
         });
         let success = {
-            status: false,
-            message: "Sucesso",
+            status: true,
+            message: "Cliente editado com successo",
             cliente,
         };
         return new NextResponse(JSON.stringify(success), {

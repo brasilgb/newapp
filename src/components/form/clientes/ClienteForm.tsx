@@ -8,10 +8,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { ClientesProps } from '@/types/clientes';
 import { clientesSchema } from "./schema";
 import { z } from "zod";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { redirect, useRouter } from "next/navigation";
 
 type FormData = z.infer<typeof clientesSchema>;
 
-async function setCliente(id: number, data: any) {
+async function editCliente(id: number, data: any) {
   const res = await fetch(`http://localhost:3000/api/clientes/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
@@ -22,8 +25,20 @@ async function setCliente(id: number, data: any) {
   return res.json();
 }
 
+async function addCliente(data: any) {
+  const res = await fetch(`http://localhost:3000/api/clientes`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    }
+  });
+  return res.json();
+}
 
-const EditForm = ({ cliente }: any) => {
+
+const ClienteForm = ({ cliente }: any) => {
+  const router = useRouter()
   const cli: ClientesProps = cliente;
   const {
     handleSubmit,
@@ -52,20 +67,31 @@ const EditForm = ({ cliente }: any) => {
   });
 
   const submitCliente = async (data: any) => {
-    // console.log(cli.id, data);
-    const {status, cliente, message} = await setCliente(cli.id, data);
-
-    if (!status) {
-      console.log(message);
+    if (cli.length === 0) {
+      const { status, message } = await addCliente(data);
+      if (!status) {
+        toast(message, { hideProgressBar: false, autoClose: 2000, type: 'error', position: 'bottom-right' });
+      } else {
+        toast(message, { hideProgressBar: false, autoClose: 2000, type: 'success', position: 'bottom-right' });
+        setTimeout(() => {
+          router.push('/clientes')
+        }, 2000)
+      }
     } else {
-      console.log(message);
+      const { status, message } = await editCliente(cli.id, data);
+      if (!status) {
+        toast(message, { hideProgressBar: false, autoClose: 2000, type: 'error', position: 'bottom-right' });
+      } else {
+        toast(message, { hideProgressBar: false, autoClose: 2000, type: 'success', position: 'bottom-right' });
+      }
     }
-
   };
 
   return (
     <form className="px-3 w-full" onSubmit={handleSubmit(submitCliente)}>
+
       <BoxContent>
+        <ToastContainer />
         <div className="grid grid-cols-6 gap-4">
           <div className="flex flex-col">
             <label className="label-form" htmlFor="cpf">
@@ -283,4 +309,4 @@ const EditForm = ({ cliente }: any) => {
   );
 };
 
-export default EditForm;
+export default ClienteForm;

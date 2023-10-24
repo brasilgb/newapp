@@ -1,5 +1,5 @@
 import PaginationControls from '@/components/PaginationControls';
-import {BoxContent, BoxFooter, BoxHeader, BoxMain} from '@/components/boxes';
+import { BoxContent, BoxFooter, BoxHeader, BoxMain } from '@/components/boxes';
 import DeleteButton from '@/components/buttons/DeleteButton';
 import EditButton from '@/components/buttons/EditButton';
 import NewButton from '@/components/buttons/NewButton';
@@ -16,7 +16,9 @@ import moment from 'moment';
 import React from 'react';
 
 async function getClientes() {
-    const res = await fetch('http://localhost:3000/api/clientes');
+    const res = await fetch('http://localhost:3000/api/clientes', {
+        next: {revalidate: 0}
+    });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
     }
@@ -27,6 +29,7 @@ interface ClientesProps {
     id: number;
     nome: string;
     email: string;
+    cpf: string;
     telefone: string;
     createdAt: string;
 }
@@ -34,7 +37,7 @@ interface ClientesProps {
 const Clientes = async ({
     searchParams,
 }: {
-    searchParams: {[key: string]: string | string[] | undefined};
+    searchParams: { [key: string]: string | string[] | undefined };
 }) => {
     const clientes = await getClientes();
 
@@ -50,7 +53,7 @@ const Clientes = async ({
         <BoxMain>
             <BoxHeader>
                 <SearchForm />
-                <NewButton label={'Novo'} path={'/'} />
+                <NewButton label={'Novo cliente'} path={'/clientes/add'} />
             </BoxHeader>
             <BoxContent>
                 <Table>
@@ -58,6 +61,7 @@ const Clientes = async ({
                         <TableRow>
                             <TableHead className="pl-4">Nome</TableHead>
                             <TableHead>E-mail</TableHead>
+                            <TableHead>CPF</TableHead>
                             <TableHead>Telefone</TableHead>
                             <TableHead>Cadastro</TableHead>
                             <TableHead></TableHead>
@@ -70,6 +74,7 @@ const Clientes = async ({
                                     {cliente.nome}
                                 </TableCell>
                                 <TableCell>{cliente.email}</TableCell>
+                                <TableCell>{cliente.cpf}</TableCell>
                                 <TableCell>{cliente.telefone}</TableCell>
                                 <TableCell className="pr-4">
                                     {moment(cliente.createdAt).format(

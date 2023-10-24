@@ -1,5 +1,5 @@
 import {BoxHeader, BoxMain} from '@/components/boxes';
-import EditForm from '@/components/form/clientes/EditForm';
+import ClienteForm from '@/components/form/clientes/ClienteForm';
 import React from 'react';
 
 export function async() {}
@@ -20,7 +20,7 @@ const EditCliente = async ({params}: {params: {id: number}}) => {
     return (
         <BoxMain>
             <BoxHeader>header</BoxHeader>
-            <EditForm cliente={cliente} />
+            <ClienteForm cliente={cliente} />
         </BoxMain>
     );
 };
