@@ -1,5 +1,5 @@
 import PaginationControls from '@/components/PaginationControls';
-import { BoxContent, BoxFooter, BoxHeader, BoxMain } from '@/components/boxes';
+import {BoxContent, BoxFooter, BoxHeader, BoxMain} from '@/components/boxes';
 import DeleteButton from '@/components/buttons/DeleteButton';
 import EditButton from '@/components/buttons/EditButton';
 import NewButton from '@/components/buttons/NewButton';
@@ -17,7 +17,8 @@ import React from 'react';
 
 async function getClientes() {
     const res = await fetch('http://localhost:3000/api/clientes', {
-        next: {revalidate: 0}
+        method: 'GET',
+        next: {revalidate: 0},
     });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
@@ -37,7 +38,7 @@ interface ClientesProps {
 const Clientes = async ({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: {[key: string]: string | string[] | undefined};
 }) => {
     const clientes = await getClientes();
 
@@ -52,7 +53,7 @@ const Clientes = async ({
     return (
         <BoxMain>
             <BoxHeader>
-                <SearchForm />
+                <SearchForm data={clientes} />
                 <NewButton label={'Novo cliente'} path={'/clientes/add'} />
             </BoxHeader>
             <BoxContent>
@@ -83,10 +84,10 @@ const Clientes = async ({
                                 </TableCell>
                                 <TableCell className="flex items-center justify-end pr-3 gap-2">
                                     <EditButton
-                                        label={''}
+                                        label={'Editar'}
                                         path={`/clientes/${cliente.id}`}
                                     />
-                                    <DeleteButton label={''} path={''} />
+                                    <DeleteButton label={'Excluir'} path={''} />
                                 </TableCell>
                             </TableRow>
                         ))}

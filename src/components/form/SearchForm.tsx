@@ -1,39 +1,113 @@
-import React from 'react';
+'use client';
+import {useRouter} from 'next/navigation';
+import {Router} from 'next/router';
+import React, {useState} from 'react';
+import {IoArrowForwardCircleOutline, IoSearch} from 'react-icons/io5';
 
-type Props = {};
+interface SearchProps {
+    data: any;
+}
 
-const SearchForm = (props: Props) => {
+const SearchForm = ({data}: SearchProps) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const router = useRouter();
+    const handleSearch = (event: any) => {
+        setSearchTerm(event.target.value);
+        if (event.target.value !== '') {
+            const results = data.filter((cliente: any) =>
+                cliente.nome
+                    .toLowerCase()
+                    .includes(event.target.value.toLowerCase()),
+            );
+            setSearchResults(results);
+        } else {
+            setSearchResults([]);
+        }
+    };
+
+    const setSearchParam = (id: number, nome: any) => {
+        setSearchTerm(nome);
+        setSearchResults([]);
+        router.push(`/clientes/${id}`);
+    };
+
     return (
         <div className="w-full md:w-1/3">
-            <form className="flex items-center">
+            <form
+                className="relative flex items-center z-20"
+                autoComplete="off"
+            >
                 <label htmlFor="simple-search" className="sr-only">
                     Search
                 </label>
                 <div className="relative w-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg
-                            aria-hidden="true"
-                            className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
+                        <IoSearch className="text-xl text-gray-400" />
                     </div>
                     <input
                         type="text"
+                        value={searchTerm}
+                        onChange={handleSearch}
                         id="simple-search"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2"
                         placeholder="Search"
                         required={true}
                     />
                 </div>
             </form>
+            {searchResults.length > 0 && (
+                <div
+                    onClick={() => setSearchResults([])}
+                    className={`fixed z-0 border-gray-50 rounded-md shadow bg-gray-900 bg-opacity-100 top-0 right-0 bottom-0 left-0 flex items-start justify-center md:px-40`}
+                >
+                    <div className="w-full pt-2 px-2 mt-36 flex flex-col items-start bg-gray-100 shadow rounded-md border-white">
+                        {searchResults.map((cliente: any) => (
+                            <div
+                                key={cliente.id}
+                                onClick={() =>
+                                    setSearchParam(cliente.id, cliente.nome)
+                                }
+                                className="w-full"
+                            >
+                                <div className="cursor-pointer mb-2 text-sm text-gray-500 p-1 bg-white w-full flex rounded">
+                                    <div className="flex-1 flex items-center justify-start">
+                                        <div>
+                                            <span className="font-semibold">
+                                                Nome
+                                            </span>
+                                            : {cliente.nome}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold ml-4">
+                                                E-mail
+                                            </span>
+                                            : {cliente.email}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold ml-4">
+                                                CPF
+                                            </span>
+                                            : {cliente.cpf}
+                                        </div>
+                                        <div>
+                                            <span className="font-semibold ml-4">
+                                                Telefone
+                                            </span>
+                                            : {cliente.telefone}
+                                        </div>
+                                    </div>
+                                    <div className="text-blue-middle">
+                                        <IoArrowForwardCircleOutline
+                                            size={30}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

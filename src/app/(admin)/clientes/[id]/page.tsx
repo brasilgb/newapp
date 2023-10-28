@@ -1,8 +1,9 @@
-import {BoxHeader, BoxMain} from '@/components/boxes';
+import { BoxHeader, BoxMain } from '@/components/boxes';
+import BackButton from "@/components/buttons/BackButton";
 import ClienteForm from '@/components/form/clientes/ClienteForm';
 import React from 'react';
 
-export function async() {}
+export function async() { }
 
 async function getCliente(id: any) {
     const res = await fetch(`http://localhost:3000/api/clientes/${id}`, {
@@ -14,12 +15,14 @@ async function getCliente(id: any) {
     return res.json();
 }
 
-const EditCliente = async ({params}: {params: {id: number}}) => {
-    const {cliente} = await getCliente(params.id);
+const EditCliente = async ({ params }: { params: { id: number } }) => {
+    const { cliente } = await getCliente(params.id);
 
     return (
         <BoxMain>
-            <BoxHeader>header</BoxHeader>
+            <BoxHeader>
+                <BackButton label={"Voltar"} path={"/clientes"} />
+            </BoxHeader>
             <ClienteForm cliente={cliente} />
         </BoxMain>
     );

@@ -1,13 +1,10 @@
-import { z } from "zod";
+import {z} from 'zod';
 
 export const clientesSchema = z.object({
     cpf: z.string().nonempty('O CPF/CNPJ é obrigatório'),
     nascimento: z.string(),
     nome: z.string().nonempty('O nome é obrigatório'),
-    email: z
-        .string()
-        .nonempty('O e-mail é obrigatório')
-        .email('Formato de e-mail inválido'),
+    email: z.string(),
     cep: z.string(),
     uf: z.string(),
     cidade: z.string(),

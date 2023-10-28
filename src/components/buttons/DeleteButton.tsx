@@ -16,7 +16,7 @@ const DeleteButton = ({label, path}: NewBtnProps) => {
                 href={path}
             >
                 <MdDelete size={16} />
-                {label}
+                <span className="ml-1">{label}</span>
             </Link>
         </div>
     );

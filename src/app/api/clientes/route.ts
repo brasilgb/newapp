@@ -1,10 +1,10 @@
 import {prisma} from '@/libs/prisma';
 import {NextRequest, NextResponse} from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request, {params}: {params: {q: string}}) {
     const clientes = await prisma.clientes.findMany({
         orderBy: {
-            id: 'desc'
+            id: 'desc',
         },
         include: {
             ordens: true,
@@ -35,8 +35,8 @@ export async function POST(request: Request) {
         if (error.code === 'P2002') {
             let err = {
                 status: false,
-                message: 'Já existe cliente com este email',
-                cliente: []
+                message: 'Já existe cliente com este CPF',
+                cliente: [],
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 409,
