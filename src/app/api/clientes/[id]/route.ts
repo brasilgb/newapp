@@ -1,7 +1,7 @@
-import {NextResponse} from 'next/server';
-import {prisma} from '@/libs/prisma';
+import { NextResponse } from 'next/server';
+import { prisma } from '@/libs/prisma';
 
-export async function GET(request: Request, {params}: {params: {id: number}}) {
+export async function GET(request: Request, { params }: { params: { id: number } }) {
     const id = params.id;
 
     const cliente = await prisma.clientes.findUnique({
@@ -21,7 +21,7 @@ export async function GET(request: Request, {params}: {params: {id: number}}) {
         };
         return new NextResponse(JSON.stringify(error_response), {
             status: 404,
-            headers: {'Content-Type': 'applicatio/json'},
+            headers: { 'Content-Type': 'applicatio/json' },
         });
     }
 
@@ -36,14 +36,14 @@ export async function GET(request: Request, {params}: {params: {id: number}}) {
 
 export async function PATCH(
     request: Request,
-    {params}: {params: {id: number}},
+    { params }: { params: { id: number } },
 ) {
     try {
         const id = params.id;
         let json = await request.json();
 
         const cliente = await prisma.clientes.update({
-            where: {id},
+            where: { id },
             data: json,
         });
         let success = {
@@ -53,7 +53,7 @@ export async function PATCH(
         };
         return new NextResponse(JSON.stringify(success), {
             status: 200,
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
         });
     } catch (error: any) {
         if (error.code === 'P2025') {
@@ -64,7 +64,7 @@ export async function PATCH(
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 404,
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
             });
         }
 
@@ -75,31 +75,38 @@ export async function PATCH(
         };
         return new NextResponse(JSON.stringify(err), {
             status: 500,
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
         });
     }
 }
 
 export async function DELETE(
     request: Request,
-    {params}: {params: {id: number}},
+    { params }: { params: { id: number } },
 ) {
     try {
         const id = params.id;
         await prisma.clientes.delete({
-            where: {id},
+            where: { id },
         });
+        let success = {
+            status: true,
+            message: 'Cliente excluido com successo',
+            // cliente,
+        };
+        return new NextResponse(JSON.stringify(success),{status: 200}
+        );
+        // return new NextResponse(null, { status: 204 });
 
-        return new NextResponse(null, {status: 204});
     } catch (error: any) {
         if (error.code === 'P2025') {
             let err = {
-                status: 'Fail',
+                status: false,
                 message: 'Não foi encontrado cliente com esta ID',
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 404,
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
             });
         }
 
@@ -109,7 +116,7 @@ export async function DELETE(
         };
         return new NextResponse(JSON.stringify(err), {
             status: 500,
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
         });
     }
 }

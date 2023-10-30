@@ -1,9 +1,9 @@
 import {z} from 'zod';
 
 export const clientesSchema = z.object({
-    cpf: z.string().nonempty('O CPF/CNPJ é obrigatório'),
+    cpf: z.string().min(1, 'O CPF/CNPJ é obrigatório'),
     nascimento: z.string(),
-    nome: z.string().nonempty('O nome é obrigatório'),
+    nome: z.string().min(1, 'O nome é obrigatório'),
     email: z.string(),
     cep: z.string(),
     uf: z.string(),
@@ -11,7 +11,7 @@ export const clientesSchema = z.object({
     bairro: z.string(),
     endereco: z.string(),
     complemento: z.string(),
-    telefone: z.string(),
+    telefone: z.string().min(1, 'O telefone é obrigatório'),
     contato: z.string(),
     telcontato: z.string(),
     obs: z.string(),

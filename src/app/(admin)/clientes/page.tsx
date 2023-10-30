@@ -1,5 +1,5 @@
 import PaginationControls from '@/components/PaginationControls';
-import {BoxContent, BoxFooter, BoxHeader, BoxMain} from '@/components/boxes';
+import { BoxContent, BoxFooter, BoxHeader, BoxMain } from '@/components/boxes';
 import DeleteButton from '@/components/buttons/DeleteButton';
 import EditButton from '@/components/buttons/EditButton';
 import NewButton from '@/components/buttons/NewButton';
@@ -18,7 +18,7 @@ import React from 'react';
 async function getClientes() {
     const res = await fetch('http://localhost:3000/api/clientes', {
         method: 'GET',
-        next: {revalidate: 0},
+        next: { revalidate: 0 },
     });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
@@ -38,7 +38,7 @@ interface ClientesProps {
 const Clientes = async ({
     searchParams,
 }: {
-    searchParams: {[key: string]: string | string[] | undefined};
+    searchParams: { [key: string]: string | string[] | undefined };
 }) => {
     const clientes = await getClientes();
 
@@ -72,22 +72,22 @@ const Clientes = async ({
                         {res.map((cliente: ClientesProps) => (
                             <TableRow>
                                 <TableCell className="pl-4 text-gray-700 font-medium">
-                                    {cliente.nome}
+                                    {cliente?.nome}
                                 </TableCell>
-                                <TableCell>{cliente.email}</TableCell>
-                                <TableCell>{cliente.cpf}</TableCell>
-                                <TableCell>{cliente.telefone}</TableCell>
+                                <TableCell>{cliente?.email}</TableCell>
+                                <TableCell>{cliente?.cpf}</TableCell>
+                                <TableCell>{cliente?.telefone}</TableCell>
                                 <TableCell className="pr-4">
-                                    {moment(cliente.createdAt).format(
+                                    {moment(cliente?.createdAt).format(
                                         'DD/MM/YYYY',
                                     )}
                                 </TableCell>
                                 <TableCell className="flex items-center justify-end pr-3 gap-2">
                                     <EditButton
                                         label={'Editar'}
-                                        path={`/clientes/${cliente.id}`}
+                                        path={`/clientes/${cliente?.id}`}
                                     />
-                                    <DeleteButton label={'Excluir'} path={''} />
+                                    <DeleteButton label={'Excluir'} id={cliente?.id} />
                                 </TableCell>
                             </TableRow>
                         ))}

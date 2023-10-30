@@ -47,27 +47,27 @@ const ClienteForm = ({cliente}: any) => {
         formState: {errors},
     } = useForm<FormData>({
         defaultValues: {
-            cpf: cli.cpf,
-            nascimento: cli.nascimento,
-            nome: cli.nome,
-            email: cli.email,
-            cep: cli.cep,
-            uf: cli.uf,
-            cidade: cli.cidade,
-            bairro: cli.bairro,
-            endereco: cli.endereco,
-            complemento: cli.complemento,
-            telefone: cli.telefone,
-            contato: cli.contato,
-            telcontato: cli.telcontato,
-            obs: cli.obs,
+            cpf: cli ? cli?.cpf : "",
+            nascimento: cli ? cli?.nascimento : "",
+            nome: cli ? cli?.nome : "",
+            email: cli ? cli?.email : "",
+            cep: cli ? cli?.cep : "",
+            uf: cli ? cli?.uf : "",
+            cidade: cli ? cli?.cidade : "",
+            bairro: cli ? cli?.bairro : "",
+            endereco: cli ? cli?.endereco : "",
+            complemento: cli ? cli?.complemento : "",
+            telefone: cli ? cli?.telefone : "",
+            contato: cli ? cli?.contato : "",
+            telcontato: cli ? cli?.telcontato : "",
+            obs: cli ? cli?.obs : "",
         },
         mode: 'onBlur',
         resolver: zodResolver(clientesSchema),
     });
 
     const submitCliente = async (data: any) => {
-        if (cli.length === 0) {
+        if (cli?.length === 0) {
             const {status, message} = await addCliente(data);
             if (!status) {
                 toast(message, {
@@ -88,7 +88,7 @@ const ClienteForm = ({cliente}: any) => {
                 }, 2000);
             }
         } else {
-            const {status, message} = await editCliente(cli.id, data);
+            const {status, message} = await editCliente(cli?.id, data);
             if (!status) {
                 toast(message, {
                     hideProgressBar: false,
@@ -132,11 +132,10 @@ const ClienteForm = ({cliente}: any) => {
                         <label className="label-form" htmlFor="nascimento">
                             Nascimento
                         </label>
-                        {/* <DatePicker selected={date} onChange={(date:any) => setDate(date)} /> */}
                         <input
                             className="input-form"
                             type="date"
-                            // value={'2023-10-05'}
+                            value={'2023-10-05'}
                             {...register('nascimento')}
                         />
                     </div>
@@ -165,11 +164,6 @@ const ClienteForm = ({cliente}: any) => {
                             type="text"
                             {...register('email')}
                         />
-                        {errors.email?.message && (
-                            <div className="text-sm text-red-600">
-                                {errors.email?.message}
-                            </div>
-                        )}
                     </div>
                 </div>
 
@@ -183,11 +177,6 @@ const ClienteForm = ({cliente}: any) => {
                             type="text"
                             {...register('cep')}
                         />
-                        {errors.cep?.message && (
-                            <div className="text-sm text-red-600">
-                                {errors.cep?.message}
-                            </div>
-                        )}
                     </div>
 
                     <div className="flex flex-col">
@@ -197,7 +186,6 @@ const ClienteForm = ({cliente}: any) => {
                         <input
                             className="input-form"
                             type="text"
-                            // value={'2023-10-05'}
                             {...register('uf')}
                         />
                     </div>
@@ -210,11 +198,6 @@ const ClienteForm = ({cliente}: any) => {
                             type="text"
                             {...register('cidade')}
                         />
-                        {errors.cidade?.message && (
-                            <div className="text-sm text-red-600">
-                                {errors.cidade?.message}
-                            </div>
-                        )}
                     </div>
 
                     <div className="col-span-2 flex flex-col">
@@ -226,11 +209,6 @@ const ClienteForm = ({cliente}: any) => {
                             type="text"
                             {...register('bairro')}
                         />
-                        {errors.bairro?.message && (
-                            <div className="text-sm text-red-600">
-                                {errors.bairro?.message}
-                            </div>
-                        )}
                     </div>
                 </div>
 
@@ -244,11 +222,6 @@ const ClienteForm = ({cliente}: any) => {
                             type="text"
                             {...register('endereco')}
                         />
-                        {errors.endereco?.message && (
-                            <div className="text-sm text-red-600">
-                                {errors.endereco?.message}
-                            </div>
-                        )}
                     </div>
 
                     <div className="flex flex-col">
@@ -258,7 +231,6 @@ const ClienteForm = ({cliente}: any) => {
                         <input
                             className="input-form"
                             type="text"
-                            // value={'2023-10-05'}
                             {...register('complemento')}
                         />
                     </div>
@@ -299,7 +271,6 @@ const ClienteForm = ({cliente}: any) => {
                         <input
                             className="input-form"
                             type="text"
-                            // value={'2023-10-05'}
                             {...register('telcontato')}
                         />
                     </div>
@@ -312,7 +283,6 @@ const ClienteForm = ({cliente}: any) => {
                         </label>
                         <textarea
                             className="input-form"
-                            // value={'2023-10-05'}
                             {...register('obs')}
                         />
                     </div>
@@ -320,7 +290,7 @@ const ClienteForm = ({cliente}: any) => {
             </BoxContent>
             <BoxFooter>
                 <div>
-                  {cli.length === 0 ? '' : <DeleteButton label={'Deletar'} path={''} />}  
+                  {cli?.length === 0 ? '' : <DeleteButton label={'Deletar'} id={cli?.id} />}  
                 </div>
                 <div>
                     <SaveButton />
