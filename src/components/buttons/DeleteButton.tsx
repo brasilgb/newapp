@@ -49,7 +49,7 @@ const DeleteButton = ({ label, id }: NewBtnProps) => {
         <>
             <ToastContainer />
             {showConfirme &&
-                <div onClick={() => setShowConfirme(false)} className="fixed z-20 top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-gray-500 bg-opacity-40">
+                <div className="fixed z-20 top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-gray-500 bg-opacity-40">
                     <div className="w-1/4 bg-gray-50 p-3 border-2 border-white shadow-md rounded-md">
                         <div className="flex items-center justify-start">
                             <div className="w-20 flex justify-center text-red-400">

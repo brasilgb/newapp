@@ -1,16 +1,16 @@
 'use client';
 import React from 'react';
-import {useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {BoxContent, BoxFooter} from '@/components/boxes';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { BoxContent, BoxFooter } from '@/components/boxes';
 import SaveButton from '@/components/buttons/SaveButton';
 import 'react-datepicker/dist/react-datepicker.css';
-import {ClientesProps} from '@/types/clientes';
-import {clientesSchema} from './schema';
-import {z} from 'zod';
-import {toast, ToastContainer} from 'react-toastify';
+import { ClientesProps } from '@/types/clientes';
+import { clientesSchema } from './schema';
+import { z } from 'zod';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import DeleteButton from '@/components/buttons/DeleteButton';
 
 type FormData = z.infer<typeof clientesSchema>;
@@ -37,14 +37,14 @@ async function addCliente(data: any) {
     return res.json();
 }
 
-const ClienteForm = ({cliente}: any) => {
+const ClienteForm = ({ cliente }: any) => {
     const router = useRouter();
     const cli: ClientesProps = cliente;
     const {
         handleSubmit,
         reset,
         register,
-        formState: {errors},
+        formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
             cpf: cli ? cli?.cpf : "",
@@ -68,7 +68,7 @@ const ClienteForm = ({cliente}: any) => {
 
     const submitCliente = async (data: any) => {
         if (cli?.length === 0) {
-            const {status, message} = await addCliente(data);
+            const { status, message } = await addCliente(data);
             if (!status) {
                 toast(message, {
                     hideProgressBar: false,
@@ -88,7 +88,7 @@ const ClienteForm = ({cliente}: any) => {
                 }, 2000);
             }
         } else {
-            const {status, message} = await editCliente(cli?.id, data);
+            const { status, message } = await editCliente(cli?.id, data);
             if (!status) {
                 toast(message, {
                     hideProgressBar: false,
@@ -135,7 +135,6 @@ const ClienteForm = ({cliente}: any) => {
                         <input
                             className="input-form"
                             type="date"
-                            value={'2023-10-05'}
                             {...register('nascimento')}
                         />
                     </div>
@@ -290,7 +289,7 @@ const ClienteForm = ({cliente}: any) => {
             </BoxContent>
             <BoxFooter>
                 <div>
-                  {cli?.length === 0 ? '' : <DeleteButton label={'Deletar'} id={cli?.id} />}  
+                    {cli?.length === 0 ? '' : <DeleteButton label={'Deletar'} id={cli?.id} />}
                 </div>
                 <div>
                     <SaveButton />
