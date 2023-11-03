@@ -32,7 +32,7 @@ const DeleteButton = ({ label, id }: NewBtnProps) => {
             toast(message, {
                 hideProgressBar: false,
                 autoClose: 2000,
-                type: 'success',
+                type: 'error',
                 position: 'bottom-right',
             });
         } else {
@@ -42,6 +42,7 @@ const DeleteButton = ({ label, id }: NewBtnProps) => {
                 type: 'error',
                 position: 'bottom-right',
             });
+            setShowConfirme(false);
             router.refresh();
         }
     }

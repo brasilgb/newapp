@@ -12,6 +12,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 import DeleteButton from '@/components/buttons/DeleteButton';
+import InputMask from "react-input-mask";
 
 type FormData = z.infer<typeof clientesSchema>;
 
@@ -44,6 +45,8 @@ const ClienteForm = ({ cliente }: any) => {
         handleSubmit,
         reset,
         register,
+        setValue,
+        control,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -67,8 +70,25 @@ const ClienteForm = ({ cliente }: any) => {
     });
 
     const submitCliente = async (data: any) => {
+        const dataClientes = {
+            cpf: data.cpf.toString().replace(/\.|-/gm, ''),
+            nascimento: data.nascimento,
+            nome: data.nome,
+            email: data.email,
+            cep: data.cep,
+            uf: data.uf,
+            cidade: data.cidade,
+            bairro: data.bairro,
+            endereco: data.endereco,
+            complemento: data.complemento,
+            telefone: data.telefone,
+            contato: data.contato,
+            telcontato: data.telcontato,
+            obs: data.obs
+        }
+
         if (cli?.length === 0) {
-            const { status, message } = await addCliente(data);
+            const { status, message } = await addCliente(dataClientes);
             if (!status) {
                 toast(message, {
                     hideProgressBar: false,
@@ -88,7 +108,7 @@ const ClienteForm = ({ cliente }: any) => {
                 }, 2000);
             }
         } else {
-            const { status, message } = await editCliente(cli?.id, data);
+            const { status, message } = await editCliente(cli?.id, dataClientes);
             if (!status) {
                 toast(message, {
                     hideProgressBar: false,
@@ -107,6 +127,18 @@ const ClienteForm = ({ cliente }: any) => {
         }
     };
 
+    const checkCEP = async (e: any) => {
+        const cep = e.target.value.replace(/\D/g, '');
+        await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(res => res.json()).then(data => {
+                setValue('uf', data?.uf);
+                setValue('cidade', data?.localidade);
+                setValue('bairro', data?.bairro);
+                setValue('endereco', data?.logradouro);
+            })
+
+    }
+
     return (
         <form className="px-3 w-full" onSubmit={handleSubmit(submitCliente)}>
             <BoxContent>
@@ -116,10 +148,13 @@ const ClienteForm = ({ cliente }: any) => {
                         <label className="label-form" htmlFor="cpf">
                             CPF/CNPJ
                         </label>
-                        <input
+                        <InputMask
                             className="input-form"
-                            type="text"
-                            {...register('cpf')}
+                            mask={"999.999.999-99"}
+                            alwaysShowMask={false}
+                            maskPlaceholder=''
+                            type={'text'}
+                            {...register("cpf")}
                         />
                         {errors.cpf?.message && (
                             <div className="text-sm text-red-600">
@@ -171,10 +206,14 @@ const ClienteForm = ({ cliente }: any) => {
                         <label className="label-form" htmlFor="cep">
                             CEP
                         </label>
-                        <input
+                        <InputMask
                             className="input-form"
-                            type="text"
-                            {...register('cep')}
+                            mask={"99999-999"}
+                            alwaysShowMask={false}
+                            maskPlaceholder=''
+                            type={'text'}
+                            {...register("cep")}
+                            onBlur={checkCEP}
                         />
                     </div>
 
@@ -240,10 +279,13 @@ const ClienteForm = ({ cliente }: any) => {
                         <label className="label-form" htmlFor="telefone">
                             Telefone
                         </label>
-                        <input
+                        <InputMask
                             className="input-form"
-                            type="text"
-                            {...register('telefone')}
+                            mask={"(99) 99999 9999"}
+                            alwaysShowMask={false}
+                            maskPlaceholder=''
+                            type={'text'}
+                            {...register("telefone")}
                         />
                         {errors.telefone?.message && (
                             <div className="text-sm text-red-600">
@@ -267,10 +309,13 @@ const ClienteForm = ({ cliente }: any) => {
                         <label className="label-form" htmlFor="telcontato">
                             Telefone de contato
                         </label>
-                        <input
+                        <InputMask
                             className="input-form"
-                            type="text"
-                            {...register('telcontato')}
+                            mask={"(99) 99999 9999"}
+                            alwaysShowMask={false}
+                            maskPlaceholder=''
+                            type={'text'}
+                            {...register("telcontato")}
                         />
                     </div>
                 </div>

@@ -7,7 +7,8 @@ export function async() { }
 
 async function getCliente(id: any) {
     const res = await fetch(`http://localhost:3000/api/clientes/${id}`, {
-        cache: 'no-store',
+        method: 'GET',
+        next: { revalidate: 0 },
     });
     if (!res.ok) {
         throw new Error('Failed to fetch data');

@@ -61,7 +61,7 @@ const SearchForm = ({data}: SearchProps) => {
                     onClick={() => setSearchResults([])}
                     className={`fixed z-0 border-gray-50 rounded-md shadow bg-gray-900 bg-opacity-100 top-0 right-0 bottom-0 left-0 flex items-start justify-center md:px-40`}
                 >
-                    <div className="w-full pt-2 px-2 mt-36 flex flex-col items-start bg-gray-100 shadow rounded-md border-white">
+                    <div className="w-full max-h-96 overflow-auto pt-2 px-2 mt-36 flex flex-col items-start bg-gray-100 shadow rounded-md border-white">
                         {searchResults.map((cliente: any) => (
                             <div
                                 key={cliente.id}
