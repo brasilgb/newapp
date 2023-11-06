@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BoxContent, BoxFooter } from '@/components/boxes';
@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 import DeleteButton from '@/components/buttons/DeleteButton';
 import InputMask from "react-input-mask";
+import { cnpj, cpf } from 'cpf-cnpj-validator';
 
 type FormData = z.infer<typeof clientesSchema>;
 
@@ -40,6 +41,7 @@ async function addCliente(data: any) {
 
 const ClienteForm = ({ cliente }: any) => {
     const router = useRouter();
+
     const cli: ClientesProps = cliente;
     const {
         handleSubmit,
@@ -47,6 +49,7 @@ const ClienteForm = ({ cliente }: any) => {
         register,
         setValue,
         control,
+        watch,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -68,6 +71,19 @@ const ClienteForm = ({ cliente }: any) => {
         mode: 'onBlur',
         resolver: zodResolver(clientesSchema),
     });
+
+    useEffect(() => {
+        const formatCpfCnpj = () => {
+            const num = watch('cpf');
+            if (num?.length < 12) {
+                setValue('cpf', cpf.format(num));
+            }
+            if (num?.length > 11) {
+                setValue('cpf', cnpj.format(num));
+            }
+        };
+        formatCpfCnpj();
+    }, []);
 
     const submitCliente = async (data: any) => {
         const dataClientes = {
@@ -334,7 +350,7 @@ const ClienteForm = ({ cliente }: any) => {
             </BoxContent>
             <BoxFooter>
                 <div>
-                    {cli?.length === 0 ? '' : <DeleteButton label={'Deletar'} id={cli?.id} />}
+                    
                 </div>
                 <div>
                     <SaveButton />

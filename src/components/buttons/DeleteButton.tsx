@@ -19,9 +19,11 @@ async function deleteCliente(id: number) {
 interface NewBtnProps {
     label: string;
     id: number;
+    btnLink?: boolean;
+    name: string;
 }
 
-const DeleteButton = ({ label, id }: NewBtnProps) => {
+const DeleteButton = ({ label, id, btnLink = false, name }: NewBtnProps) => {
     const [showConfirme, setShowConfirme] = useState(false);
 
     const router = useRouter();
@@ -90,10 +92,16 @@ const DeleteButton = ({ label, id }: NewBtnProps) => {
             <div>
                 <div>
                     <button
-                        className="flex items-center justify-center text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-200 font-medium rounded text-sm px-4 py-2 focus:outline-none"
+                        className={`
+                        ${btnLink
+                                ? 'text-gray-500 underline'
+                                : 'flex items-center justify-center text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-200 font-medium rounded text-sm px-4 py-2 focus:outline-none'
+                            }
+                        `}
                         onClick={() => setShowConfirme(true)}
+                        title={`Excluir ${name}`}
                     >
-                        <MdDelete size={16} />
+                        {!btnLink && <MdDelete size={16} />}
                         <span className="ml-1">{label}</span>
                     </button>
                 </div>

@@ -1,17 +1,19 @@
 'use client';
-import {useRouter} from 'next/navigation';
-import {Router} from 'next/router';
-import React, {useState} from 'react';
-import {IoArrowForwardCircleOutline, IoSearch} from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+import { Router } from 'next/router';
+import React, { useState } from 'react';
+import { IoClose, IoSearch } from 'react-icons/io5';
+import EditButton from '../buttons/EditButton';
+import DeleteButton from '../buttons/DeleteButton';
 
 interface SearchProps {
     data: any;
 }
 
-const SearchForm = ({data}: SearchProps) => {
+const SearchForm = ({ data }: SearchProps) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const router = useRouter();
+
     const handleSearch = (event: any) => {
         setSearchTerm(event.target.value);
         if (event.target.value !== '') {
@@ -24,12 +26,6 @@ const SearchForm = ({data}: SearchProps) => {
         } else {
             setSearchResults([]);
         }
-    };
-
-    const setSearchParam = (id: number, nome: any) => {
-        setSearchTerm(nome);
-        setSearchResults([]);
-        router.push(`/clientes/${id}`);
     };
 
     return (
@@ -58,19 +54,22 @@ const SearchForm = ({data}: SearchProps) => {
             </form>
             {searchResults.length > 0 && (
                 <div
-                    onClick={() => setSearchResults([])}
                     className={`fixed z-0 border-gray-50 rounded-md shadow bg-gray-900 bg-opacity-100 top-0 right-0 bottom-0 left-0 flex items-start justify-center md:px-40`}
                 >
-                    <div className="w-full max-h-96 overflow-auto pt-2 px-2 mt-36 flex flex-col items-start bg-gray-100 shadow rounded-md border-white">
+                    <div
+                        onClick={() => setSearchResults([])}
+                        className='absolute z-40 top-24 right-[160px] w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-500 cursor-pointer'
+                    >
+                        <IoClose size={20} />
+                    </div>
+                    <div className="w-full relative z-10 max-h-96 overflow-auto pt-2 px-3 mt-36 flex flex-col items-start bg-gray-100 shadow-md rounded-md border-white">
+
                         {searchResults.map((cliente: any) => (
                             <div
                                 key={cliente.id}
-                                onClick={() =>
-                                    setSearchParam(cliente.id, cliente.nome)
-                                }
                                 className="w-full"
                             >
-                                <div className="cursor-pointer mb-2 text-sm text-gray-500 p-1 bg-white w-full flex rounded">
+                                <div className="mb-2 text-sm text-gray-500 p-2 bg-white border w-full flex rounded">
                                     <div className="flex-1 flex items-center justify-start">
                                         <div>
                                             <span className="font-semibold">
@@ -97,10 +96,9 @@ const SearchForm = ({data}: SearchProps) => {
                                             : {cliente.telefone}
                                         </div>
                                     </div>
-                                    <div className="text-blue-middle">
-                                        <IoArrowForwardCircleOutline
-                                            size={30}
-                                        />
+                                    <div className="flex items-center gap-2">
+                                        <EditButton label={'Editar'} path={`/clientes/${cliente?.id}`} btnLink={true} name="cliente" />
+                                        <DeleteButton label={'Deletar'} id={cliente.id} btnLink={true} name='cliente' />
                                     </div>
                                 </div>
                             </div>

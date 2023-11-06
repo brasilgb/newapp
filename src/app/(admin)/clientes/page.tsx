@@ -86,8 +86,13 @@ const Clientes = async ({
                                     <EditButton
                                         label={'Editar'}
                                         path={`/clientes/${cliente?.id}`}
+                                        name='cliente'
                                     />
-                                    <DeleteButton label={'Excluir'} id={cliente?.id} />
+                                    <DeleteButton 
+                                    label={'Excluir'} 
+                                    id={cliente?.id}
+                                    name='cliente'
+                                     />
                                 </TableCell>
                             </TableRow>
                         ))}
