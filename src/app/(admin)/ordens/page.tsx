@@ -64,8 +64,8 @@ const Clientes = async ({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {res.map((cliente: ClientesProps, idx: number) => (
-                            <TableRow key={idx}>
+                        {res.map((cliente: ClientesProps) => (
+                            <TableRow key={cliente.id}>
                                 <TableCell className="pl-4 text-gray-700 font-medium">
                                     {cliente?.nome}
                                 </TableCell>

@@ -4,6 +4,7 @@ import {navlinks} from './navlinks';
 import Link from 'next/link';
 import {AiOutlineDashboard} from 'react-icons/ai';
 import {usePathname} from 'next/navigation';
+import { IoConstructSharp, IoPeopleSharp, IoPerson } from "react-icons/io5";
 
 const SideNavigation = ({opened}: any) => {
     const pathname = usePathname();
@@ -12,6 +13,10 @@ const SideNavigation = ({opened}: any) => {
         switch (icone) {
             case 'Dashboard':
                 return <AiOutlineDashboard size={20} />;
+            case 'Clientes':
+                return <IoPeopleSharp size={20} />;
+            case 'Ordens':
+                return <IoConstructSharp  size={20} />;
         }
     };
 

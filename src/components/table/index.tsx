@@ -19,7 +19,7 @@ export const TableBody = ({children}: TableProps) => {
 };
 
 export const TableRow = ({children, className, key}: TableProps) => {
-    return <tr className={`${className}`}>{children}</tr>;
+    return <tr key={key} className={`${className}`}>{children}</tr>;
 };
 
 export const TableHead = ({children, className}: TableProps) => {

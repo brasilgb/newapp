@@ -6,14 +6,14 @@ export const navlinks = [
         urlSegment: '',
     },
     {
-        label: 'Dashboard',
+        label: 'Clientes',
         path: '/clientes',
         title: 'Clientes',
     },
     {
-        label: 'Link 3',
-        path: '/3',
-        title: 'Link 3',
+        label: 'Ordens',
+        path: '/ordens',
+        title: 'Ordens',
     },
     {
         label: 'Link 4',

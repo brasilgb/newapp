@@ -50,7 +50,7 @@ const DeleteButton = ({ label, id, btnLink = false, name }: NewBtnProps) => {
     }
     return (
         <>
-            <ToastContainer />
+
             {showConfirme &&
                 <div className="fixed z-20 top-0 right-0 bottom-0 left-0 flex items-center justify-center bg-gray-500 bg-opacity-40">
                     <div className="w-1/4 bg-gray-50 p-3 border-2 border-white shadow-md rounded-md">
@@ -105,7 +105,7 @@ const DeleteButton = ({ label, id, btnLink = false, name }: NewBtnProps) => {
                         <span className="ml-1">{label}</span>
                     </button>
                 </div>
-
+                <ToastContainer />
             </div>
         </>
 
