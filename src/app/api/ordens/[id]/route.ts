@@ -4,7 +4,7 @@ import { prisma } from '@/libs/prisma';
 export async function GET(request: Request, { params }: { params: { id: number } }) {
     const id = params.id;
 
-    const cliente = await prisma.ordens.findUnique({
+    const ordem = await prisma.ordens.findUnique({
         where: {
             id,
         },
@@ -13,11 +13,11 @@ export async function GET(request: Request, { params }: { params: { id: number }
         },
     });
 
-    if (!cliente) {
+    if (!ordem) {
         let error_response = {
             status: false,
-            cliente: [],
-            message: 'Não foi encontrado cliente com esta ID',
+            ordem: [],
+            message: 'Não foi encontrado ordem com esta ID',
         };
         return new NextResponse(JSON.stringify(error_response), {
             status: 404,
@@ -27,8 +27,8 @@ export async function GET(request: Request, { params }: { params: { id: number }
 
     let json_response = {
         status: true,
-        cliente,
-        message: 'Cliente encontrado com sucesso',
+        ordem,
+        message: 'Ordem encontrado com sucesso',
     };
 
     return NextResponse.json(json_response);
@@ -42,14 +42,14 @@ export async function PATCH(
         const id = params.id;
         let json = await request.json();
 
-        const cliente = await prisma.ordens.update({
+        const ordem = await prisma.ordens.update({
             where: { id },
             data: json,
         });
         let success = {
             status: true,
-            message: 'Cliente editado com successo',
-            cliente,
+            message: 'Ordem editado com successo',
+            ordem,
         };
         return new NextResponse(JSON.stringify(success), {
             status: 200,
@@ -59,8 +59,8 @@ export async function PATCH(
         if (error.code === 'P2025') {
             let err = {
                 status: false,
-                message: 'Não foi encontrado cliente com esta ID',
-                cliente: [],
+                message: 'Não foi encontrado ordem com esta ID',
+                ordem: [],
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 404,
@@ -71,7 +71,7 @@ export async function PATCH(
         let err = {
             status: false,
             message: error.message,
-            cliente: [],
+            ordem: [],
         };
         return new NextResponse(JSON.stringify(err), {
             status: 500,
@@ -91,8 +91,8 @@ export async function DELETE(
         });
         let success = {
             status: true,
-            message: 'Cliente excluido com successo',
-            // cliente,
+            message: 'Ordem excluida com successo',
+            // ordem,
         };
         return new NextResponse(JSON.stringify(success),{status: 200}
         );
@@ -102,7 +102,7 @@ export async function DELETE(
         if (error.code === 'P2025') {
             let err = {
                 status: false,
-                message: 'Não foi encontrado cliente com esta ID',
+                message: 'Não foi encontrado ordem com esta ID',
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 404,

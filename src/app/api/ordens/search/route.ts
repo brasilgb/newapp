@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const param: any = searchParams.get("q");
 
-    const cliente = await prisma.ordens.findMany({
+    const ordem = await prisma.ordens.findMany({
         where: {
             id: param
         },
@@ -15,10 +15,10 @@ export async function GET(request: Request) {
         },
     });
 
-    if (!cliente) {
+    if (!ordem) {
         let error_response = {
             status: false,
-            cliente: [],
+            ordem: [],
             message: 'Não foi encontrado ordens com esta chave',
         };
         return new NextResponse(JSON.stringify(error_response), {
@@ -29,8 +29,8 @@ export async function GET(request: Request) {
 
     let json_response = {
         status: true,
-        cliente,
-        message: `Foram encontrados  (${cliente.length}) ordens`,
+        ordem,
+        message: `Foram encontrados  (${ordem.length}) ordens`,
     };
 
     return NextResponse.json(json_response);

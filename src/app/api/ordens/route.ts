@@ -18,14 +18,14 @@ export async function POST(request: Request) {
     try {
         const json = await request.json();
 
-        const cliente = await prisma.ordens.create({
+        const ordem = await prisma.ordens.create({
             data: json,
         });
 
         let json_response = {
             status: true,
             message: 'Cliente cadastrado com sucesso',
-            cliente,
+            ordem,
         };
         return new NextResponse(JSON.stringify(json_response), {
             status: 201,
@@ -35,8 +35,8 @@ export async function POST(request: Request) {
         if (error.code === 'P2002') {
             let err = {
                 status: false,
-                message: 'Já existe cliente com este CPF',
-                cliente: [],
+                message: 'Já existe ordem com este CPF',
+                ordem: [],
             };
             return new NextResponse(JSON.stringify(err), {
                 status: 409,

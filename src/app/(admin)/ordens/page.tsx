@@ -13,12 +13,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/table';
-import { ClientesProps } from "@/types/clientes";
+import { OrdensProps } from "@/types/ordens";
 import moment from 'moment';
 import React from 'react';
 
-async function getClientes() {
-    const res = await fetch('http://localhost:3000/api/clientes', {
+async function getOrdens() {
+    const res = await fetch('http://localhost:3000/api/ordens', {
         method: 'GET',
         next: { revalidate: 0 },
     });
@@ -29,12 +29,12 @@ async function getClientes() {
 }
 
 
-const Clientes = async ({
+const Ordens = async ({
     searchParams,
 }: {
     searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-    const clientes = await getClientes();
+    const ordens = await getOrdens();
 
     const page = searchParams['page'] ?? '1';
     const per_page = searchParams['per_page'] ?? '5';
@@ -43,55 +43,57 @@ const Clientes = async ({
     const start = (Number(page) - 1) * Number(per_page); // 0, 5, 10 ...
     const end = start + Number(per_page); // 5, 10, 15 ...
 
-    const res = clientes.slice(start, end);
+    const res = ordens.slice(start, end);
     return (
         <BoxMain>
             <BoxHeader>
-                {/* <SearchForm data={clientes} /> */}
+                {/* <SearchForm data={ordens} /> */}
                 <SearchInput />
-                <NewButton label={'Novo cliente'} path={'/clientes/add'} />
+                <NewButton label={'Novo cliente'} path={'/ordens/add'} />
             </BoxHeader>
             <BoxContent>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="pl-4">Nome</TableHead>
-                            <TableHead>E-mail</TableHead>
-                            <TableHead>CPF</TableHead>
+                            <TableHead className="pl-4">N° Ordem</TableHead>
+                            <TableHead>Cliente</TableHead>
                             <TableHead>Telefone</TableHead>
-                            <TableHead>Cadastro</TableHead>
+                            <TableHead>Recebimento</TableHead>
+                            <TableHead>Equipamento</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Entrega</TableHead>
                             <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {res.map((cliente: ClientesProps) => (
-                            <TableRow key={cliente.id}>
+                        {res.map((ordem: OrdensProps) => (
+                            <TableRow key={ordem.id}>
                                 <TableCell className="pl-4 text-gray-700 font-medium">
-                                    {cliente?.nome}
+                                    {ordem?.id}
                                 </TableCell>
-                                <TableCell>{cliente?.email}</TableCell>
-                                <TableCell>{cliente?.cpf}</TableCell>
-                                <TableCell>{cliente?.telefone}</TableCell>
+                                <TableCell>{ordem?.cliente_id}</TableCell>
+                                <TableCell>{ordem?.telefone}</TableCell>
                                 <TableCell className="pr-4">
-                                    {moment(cliente?.createdAt).format(
+                                    {moment(ordem?.createdAt).format(
                                         'DD/MM/YYYY',
-                                    )}
+                                        )}
+                                        <TableCell>{ordem?.status}</TableCell>
                                 </TableCell>
                                 <TableCell className="flex items-center justify-end pr-3 gap-2">
                                     <OrderClient
                                         label={'Ordens'}
-                                        path={`/ordens/${cliente?.id}`}
-                                        name='cliente'
+                                        path={`/ordens/${ordem?.id}`}
+                                        name='ordem'
                                     />
                                     <EditButton
                                         label={'Editar'}
-                                        path={`/clientes/${cliente?.id}`}
-                                        name='cliente'
+                                        path={`/ordens/${ordem?.id}`}
+                                        name='ordem'
                                     />
                                     <DeleteButton
                                         label={'Excluir'}
-                                        id={cliente?.id}
-                                        name='cliente'
+                                        id={ordem?.id}
+                                        name='ordem'
                                     />
                                 </TableCell>
                             </TableRow>
@@ -101,13 +103,13 @@ const Clientes = async ({
             </BoxContent>
             <BoxFooter>
                 <PaginationControls
-                    hasNextPage={end < clientes.length}
+                    hasNextPage={end < ordens.length}
                     hasPrevPage={start > 0}
-                    hasLength={clientes.length}
+                    hasLength={ordens.length}
                 />
             </BoxFooter>
         </BoxMain>
     );
 };
 
-export default Clientes;
+export default Ordens;

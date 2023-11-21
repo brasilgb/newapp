@@ -1,16 +1,16 @@
 import {BoxHeader, BoxMain} from '@/components/boxes';
 import BackButton from "@/components/buttons/BackButton";
-import ClienteForm from '@/components/form/clientes/ClienteForm';
+import AddOrdemForm from "@/components/form/ordens/AddOrdemForm";
 import React from 'react';
 
-const AddCliente = async ({params}: {params: {id: number}}) => {
+const AddOrdem = async ({params}: {params: {id: number}}) => {
     return (
         <BoxMain>
             <BoxHeader>
-                <BackButton label={"Voltar"} path={"/clientes"} />
+                <BackButton label={"Voltar"} path={"/ordens"} />
             </BoxHeader>
-            <ClienteForm cliente={[]} />
+            <AddOrdemForm ordem={[]} />
         </BoxMain>
     );
 };
-export default AddCliente;
+export default AddOrdem;
