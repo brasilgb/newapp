@@ -19,7 +19,6 @@ async function getOrdem(id: any) {
 
 const EditOrdem = async ({ params }: { params: { id: number } }) => {
     const { ordem } = await getOrdem(params.id);
-console.log('Ordem', ordem);
     return (
         <BoxMain>
             <BoxHeader>

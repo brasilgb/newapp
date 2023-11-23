@@ -7,13 +7,13 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ordensAddSchema } from "./addSchema";
+import { ordensEditSchema } from "./editSchema";
 import { useRouter } from "next/navigation";
 import { OrdensProps } from "@/types/ordens";
 import moment from "moment";
-type FormData = z.infer<typeof ordensAddSchema>;
+type FormData = z.infer<typeof ordensEditSchema>;
 
-async function editOrdem(id:number, data: any) {
+async function editOrdem(id: number, data: any) {
     const res = await fetch(`http://localhost:3000/api/ordens/${id}`, {
         method: 'PATCH',
         body: JSON.stringify(data),
@@ -28,35 +28,34 @@ const EditOrdemForm = ({ ordem }: any) => {
     const router = useRouter();
     const ord: OrdensProps = ordem;
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>({
         defaultValues: {
-            cliente_id: ord.cliente_id,
-            equipamento: ord.equipamento,
-            modelo: ord.modelo,
-            senha: ord.senha,
-            defeito: ord.defeito,
-            estado: ord.estado,
-            acessorios: ord.acessorios,
-            previsao: ord.previsao,
-            orcamento: ord.orcamento,
-            descorcamento: ord.descorcamento,
-            pecas: ord.pecas,
-            valpecas: ord.valpecas,
-            valservico: ord.valservico,
-            custo: ord.custo,
-            status: ord.status,
-            tecnico: ord.tecnico,
-            envioemail: ord.envioemail,
-            detalhes: ord.detalhes,
-            dtentrega: ord.status === 7 ? moment() : ord.createdAt,
-            obs: ord.obs,
+            cliente_id: ord?.cliente_id,
+            equipamento: ord?.equipamento,
+            modelo: ord?.modelo,
+            senha: ord?.senha,
+            defeito: ord?.defeito,
+            estado: ord?.estado,
+            acessorios: ord?.acessorios,
+            previsao: ord?.previsao,
+            orcamento: ord?.orcamento,
+            descorcamento: ord?.descorcamento,
+            pecas: ord?.pecas,
+            valpecas: ord?.valpecas,
+            valservico: ord?.valservico,
+            custo: ord?.custo,
+            status: ord?.status,
+            tecnico: ord?.tecnico,
+            envioemail: ord?.envioemail,
+            detalhes: ord?.detalhes,
+            obs: ord?.obs,
         },
         mode: 'onBlur',
-        resolver: zodResolver(ordensAddSchema),
+        resolver: zodResolver(ordensEditSchema),
     });
     const submitOrdem = async (data: any) => {
-
-        const { status, message } = await editOrdem(ord.id, data);
+        setValue('cliente_id', ord.cliente_id)
+        const { status, message } = await editOrdem(ord?.id, data);
 
         if (!status) {
             toast(message, {
@@ -83,35 +82,32 @@ const EditOrdemForm = ({ ordem }: any) => {
                 <ToastContainer />
                 <div className="grid grid-cols-5 gap-4">
                     <div className="flex flex-col">
-                        <label className="label-form" htmlFor="cpf">
+                        <label className="label-form" htmlFor="ordem">
                             N° Ordem
                         </label>
                         <input
                             className="input-form"
                             type="text"
                             disabled
+                            defaultValue={ord.id}
                         />
                     </div>
 
                     <div className="col-span-2 flex flex-col">
-                        <label className="label-form" htmlFor="nascimento">
+                        <label className="label-form" htmlFor="nome">
                             Nome do cliente
                         </label>
                         <input
                             className="input-form"
                             type="text"
-                            value={ord.clientes.nome}
-                            {...register('cliente_id')}
+                            disabled
+                            defaultValue={ord.clientes.nome}
                         />
-                        {errors.cliente_id?.message && (
-                            <div className="text-sm text-red-600">
-                                {errors.cliente_id?.message}
-                            </div>
-                        )}
                     </div>
+                    <input type="hidden" {...register('cliente_id')} />
 
                     <div className="col-span-2 flex flex-col">
-                        <label className="label-form" htmlFor="nome">
+                        <label className="label-form" htmlFor="equipamento">
                             Tipo do equipamento
                         </label>
                         <input
@@ -129,7 +125,7 @@ const EditOrdemForm = ({ ordem }: any) => {
 
                 <div className="md:grid md:grid-cols-7 md:gap-x-6 mt-6">
                     <div className="col-span-3 flex flex-col">
-                        <label className="label-form" htmlFor="email">
+                        <label className="label-form" htmlFor="modelo">
                             Modelo do equipamento
                         </label>
                         <input
@@ -141,7 +137,7 @@ const EditOrdemForm = ({ ordem }: any) => {
                     </div>
 
                     <div className="col-span-2 flex flex-col">
-                        <label className="label-form" htmlFor="cep">
+                        <label className="label-form" htmlFor="senha">
                             Senha do equipamento
                         </label>
                         <input
@@ -152,20 +148,20 @@ const EditOrdemForm = ({ ordem }: any) => {
                     </div>
 
                     <div className="col-span-2 flex flex-col">
-                        <label className="label-form" htmlFor="uf">
+                        <label className="label-form" htmlFor="previsao">
                             Previsão de entrega
                         </label>
                         <input
                             className="input-form"
-                            type="text"
+                            type="date"
                             {...register('previsao')}
                         />
                     </div>
                 </div>
 
-                <div className="md:grid md:grid-cols-2 md:gap-x-6 mt-6">
+                <div className="md:grid md:grid-cols-3 md:gap-x-6 mt-6 pt-4">
                     <div className="flex flex-col">
-                        <label className="label-form" htmlFor="cidade">
+                        <label className="label-form" htmlFor="defeito">
                             Defeito relatado/Serviço solicitado
                         </label>
                         <textarea
@@ -180,7 +176,7 @@ const EditOrdemForm = ({ ordem }: any) => {
                     </div>
 
                     <div className="flex flex-col">
-                        <label className="label-form" htmlFor="bairro">
+                        <label className="label-form" htmlFor="estado">
                             Estado do equipamento
                         </label>
                         <textarea
@@ -188,11 +184,8 @@ const EditOrdemForm = ({ ordem }: any) => {
                             {...register('estado')}
                         />
                     </div>
-                </div>
-
-                <div className="md:grid md:grid-cols-2 md:gap-x-6 mt-6">
                     <div className="flex flex-col">
-                        <label className="label-form" htmlFor="endereco">
+                        <label className="label-form" htmlFor="acessorios">
                             Acessórios
                         </label>
                         <textarea
@@ -200,9 +193,134 @@ const EditOrdemForm = ({ ordem }: any) => {
                             {...register('acessorios')}
                         />
                     </div>
+                </div>
+
+                <div className="mt-6 w-full border-b pb-6">
+                    <div className="border-b text-lg font-medium text-gray-500 bg-gray-100 px-2">Orçamento</div>
+                    <div className="md:grid md:grid-cols-3 md:gap-x-6 mt-6">
+                        <div className="flex flex-col">
+                            <label className="label-form" htmlFor="orcamento">
+                                Status do orçamento
+                            </label>
+                            <select
+                                className="input-form"
+                                {...register('orcamento')}
+                            >
+                                <option value="">Selecione o status</option>
+                                <option value="1">Gerado</option>
+                                <option value="2">Aprovado</option>
+                            </select>
+                        </div>
+
+                        <div className="flex flex-col col-span-2">
+                            <label className="label-form" htmlFor="descorcamento">
+                                Descrição do orçamento
+                            </label>
+                            <textarea
+                                className="input-form"
+                                {...register('descorcamento')}
+                            />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="md:grid md:grid-cols-5 md:gap-x-6 mt-6">
+                    <div className="flex flex-col col-span-2">
+                        <label className="label-form" htmlFor="pecas">
+                            Peças adicionadas
+                        </label>
+                        <input
+                            className="input-form"
+                            {...register('pecas')}
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="label-form" htmlFor="valpecas">
+                            Valor das peças
+                        </label>
+                        <input
+                            className="input-form"
+                            {...register('valpecas')}
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="label-form" htmlFor="valservico">
+                            Valor do serviço
+                        </label>
+                        <input
+                            className="input-form"
+                            {...register('valservico')}
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="label-form" htmlFor="custo">
+                            Custo total
+                        </label>
+                        <input
+                            className="input-form"
+                            {...register('custo')}
+                        />
+                    </div>
+                </div>
+
+                <div className="md:grid md:grid-cols-2 md:gap-x-6 mt-6">
+                    <div className="flex flex-col">
+                        <label className="label-form" htmlFor="tecnico">
+                            Técnico
+                        </label>
+                        <select
+                            className="input-form"
+                            {...register('tecnico')}
+                        >
+                            <option value="">Selecione o técnico</option>
+                            <option value="1">Gerado</option>
+                            <option value="2">Aprovado</option>
+                        </select>
+                        {errors.tecnico?.message && (
+                            <div className="text-sm text-red-600">
+                                {errors.tecnico?.message}
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex flex-col">
-                        <label className="label-form" htmlFor="complemento">
+                        <label className="label-form" htmlFor="status">
+                            Status do serviço
+                        </label>
+                        <select
+                            className="input-form"
+                            {...register('status')}
+                        >
+                            <option value="">Selecione o status</option>
+                            <option value="1">Ordem aberta</option>
+                            <option value="2">Aguardando avaliação</option>
+                            <option value="3">Ordem fechada</option>
+                            <option value="4">Executando reparo</option>
+                            <option value="5">(CA)Serviço concluído</option>
+                            <option value="6">(CN)Serviço concluído</option>
+                            <option value="7">Entregue ao cliente</option>
+                        </select>
+                        {errors.status?.message && (
+                            <div className="text-sm text-red-600">
+                                {errors.status?.message}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="md:grid md:grid-cols-2 md:gap-x-6 mt-6">
+                    <div className="flex flex-col">
+                        <label className="label-form" htmlFor="detalhes">
+                            Detalhes do serviço
+                        </label>
+                        <textarea
+                            className="input-form"
+                            {...register('detalhes')}
+                        />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="label-form" htmlFor="obs">
                             Observações
                         </label>
                         <textarea

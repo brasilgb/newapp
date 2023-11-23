@@ -123,7 +123,7 @@ model ordens {
   defeito         String    @db.Text
   estado          String    @db.VarChar(100)
   acessorios      String?   @db.Text
-  orcamento       Int?
+  orcamento       Int?      @db.TinyInt
   descorcamento   String?   @db.Text
   detalhes        String?   @db.Text
   pecas           String?   @db.Text
@@ -136,7 +136,7 @@ model ordens {
   comunicado      Int?      @db.TinyInt
   entrega         Int?      @db.TinyInt
   dtentrega       DateTime? @db.DateTime(0)
-  tecnico         Int?
+  tecnico         Int?      @db.TinyInt
   status          Int       @default(1) @db.TinyInt
   envioemail      Boolean?
   obs             String?   @db.Text

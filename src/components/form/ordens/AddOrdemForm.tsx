@@ -24,6 +24,17 @@ async function addOrdem(data: any) {
     return res.json();
 }
 
+async function getNewOrdem() {
+    const res = await fetch('http://localhost:3000/api/ordens', {
+        method: 'GET',
+        next: { revalidate: 0 },
+    });
+    if (!res.ok) {
+        throw new Error('Failed to fetch data');
+    }
+    return res.json();
+}
+
 async function getAllClientes() {
     const res = await fetch('http://localhost:3000/api/clientes', {
         method: 'GET',
@@ -38,6 +49,7 @@ async function getAllClientes() {
 const AddOrdemForm = () => {
     const router = useRouter();
     const [allClientes, setAllClientes] = useState([]);
+    const [newOrdem, setNewOrdem] = useState([]);
 
     const { register, handleSubmit, formState: { errors }, control } = useForm<FormData>({
         defaultValues: {
@@ -88,6 +100,14 @@ const AddOrdemForm = () => {
         getClientes();
     }, [])
 
+    useEffect(() => {
+        const getOrdens = async () => {
+            const ordens = await getNewOrdem();
+            setNewOrdem(ordens.map((ordem: any) => (ordem.id)));
+        };
+        getOrdens();
+    }, [])
+
     return (
         <form className="px-3 w-full" onSubmit={handleSubmit(submitOrdem)}>
             <BoxContent>
@@ -101,6 +121,7 @@ const AddOrdemForm = () => {
                             className="input-form"
                             type="text"
                             disabled
+                            defaultValue={parseInt(newOrdem[0]) + 1}
                         />
                     </div>
 
