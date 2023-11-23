@@ -86,6 +86,7 @@ const ClienteForm = ({ cliente }: any) => {
     }, []);
 
     const submitCliente = async (data: any) => {
+
         const dataClientes = {
             cpf: data.cpf.toString().replace(/\.|-/gm, ''),
             nascimento: data.nascimento,

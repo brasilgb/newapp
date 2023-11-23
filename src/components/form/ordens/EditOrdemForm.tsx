@@ -1,21 +1,21 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { BoxContent, BoxFooter } from "@/components/boxes";
 import SaveButton from "@/components/buttons/SaveButton";
-import { useController, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ordensAddSchema } from "./addSchema";
 import { useRouter } from "next/navigation";
-import Select from 'react-select';
-
+import { OrdensProps } from "@/types/ordens";
+import moment from "moment";
 type FormData = z.infer<typeof ordensAddSchema>;
 
-async function addOrdem(data: any) {
-    const res = await fetch(`http://localhost:3000/api/ordens`, {
-        method: 'POST',
+async function editOrdem(id:number, data: any) {
+    const res = await fetch(`http://localhost:3000/api/ordens/${id}`, {
+        method: 'PATCH',
         body: JSON.stringify(data),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -24,41 +24,39 @@ async function addOrdem(data: any) {
     return res.json();
 }
 
-async function getAllClientes() {
-    const res = await fetch('http://localhost:3000/api/clientes', {
-        method: 'GET',
-        next: { revalidate: 0 },
-    });
-    if (!res.ok) {
-        throw new Error('Failed to fetch data');
-    }
-    return res.json();
-}
-
-const AddOrdemForm = () => {
+const EditOrdemForm = ({ ordem }: any) => {
     const router = useRouter();
-    const [allClientes, setAllClientes] = useState([]);
+    const ord: OrdensProps = ordem;
 
-    const { register, handleSubmit, formState: { errors }, control } = useForm<FormData>({
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
         defaultValues: {
-            cliente_id: "",
-            equipamento: "",
-            modelo: "",
-            senha: "",
-            defeito: "",
-            estado: "",
-            acessorios: "",
-            previsao: "",
-            obs: "",
+            cliente_id: ord.cliente_id,
+            equipamento: ord.equipamento,
+            modelo: ord.modelo,
+            senha: ord.senha,
+            defeito: ord.defeito,
+            estado: ord.estado,
+            acessorios: ord.acessorios,
+            previsao: ord.previsao,
+            orcamento: ord.orcamento,
+            descorcamento: ord.descorcamento,
+            pecas: ord.pecas,
+            valpecas: ord.valpecas,
+            valservico: ord.valservico,
+            custo: ord.custo,
+            status: ord.status,
+            tecnico: ord.tecnico,
+            envioemail: ord.envioemail,
+            detalhes: ord.detalhes,
+            dtentrega: ord.status === 7 ? moment() : ord.createdAt,
+            obs: ord.obs,
         },
         mode: 'onBlur',
         resolver: zodResolver(ordensAddSchema),
     });
-    const { field: { value: nameValue, onChange: langOnChange, ...restLangField } } = useController({ name: 'cliente_id', control });
-
     const submitOrdem = async (data: any) => {
 
-        const { status, message } = await addOrdem(data);
+        const { status, message } = await editOrdem(ord.id, data);
 
         if (!status) {
             toast(message, {
@@ -79,15 +77,6 @@ const AddOrdemForm = () => {
             }, 2000);
         }
     }
-
-    useEffect(() => {
-        const getClientes = async () => {
-            const clientes = await getAllClientes();
-            setAllClientes(clientes.map((cliente: any) => ({ value: cliente.id, label: cliente.nome })));
-        };
-        getClientes();
-    }, [])
-
     return (
         <form className="px-3 w-full" onSubmit={handleSubmit(submitOrdem)}>
             <BoxContent>
@@ -108,21 +97,11 @@ const AddOrdemForm = () => {
                         <label className="label-form" htmlFor="nascimento">
                             Nome do cliente
                         </label>
-                        <Select
-                            className=""
-                            styles={{
-                                control: provided => ({
-                                    ...provided,
-                                    padding: 2,
-                                    borderRadius: 6,
-                                }),
-                            }}
-                            placeholder="Selecione o clientes"
-                            isClearable
-                            options={allClientes}
-                            value={nameValue ? allClientes.find(x => x.value === nameValue) : nameValue}
-                            onChange={option => langOnChange(option ? option.value : option)}
-                            {...restLangField}
+                        <input
+                            className="input-form"
+                            type="text"
+                            value={ord.clientes.nome}
+                            {...register('cliente_id')}
                         />
                         {errors.cliente_id?.message && (
                             <div className="text-sm text-red-600">
@@ -178,7 +157,7 @@ const AddOrdemForm = () => {
                         </label>
                         <input
                             className="input-form"
-                            type="date"
+                            type="text"
                             {...register('previsao')}
                         />
                     </div>
@@ -244,4 +223,4 @@ const AddOrdemForm = () => {
     )
 }
 
-export default AddOrdemForm
+export default EditOrdemForm

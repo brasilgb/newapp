@@ -9,7 +9,7 @@ const AddOrdem = async ({params}: {params: {id: number}}) => {
             <BoxHeader>
                 <BackButton label={"Voltar"} path={"/ordens"} />
             </BoxHeader>
-            <AddOrdemForm ordem={[]} />
+            <AddOrdemForm />
         </BoxMain>
     );
 };

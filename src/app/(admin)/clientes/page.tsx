@@ -48,7 +48,7 @@ const Clientes = async ({
         <BoxMain>
             <BoxHeader>
                 {/* <SearchForm data={clientes} /> */}
-                <SearchInput />
+                <SearchInput placeHolder={"Buscar cliente"} />
                 <NewButton label={'Novo cliente'} path={'/clientes/add'} />
             </BoxHeader>
             <BoxContent>
@@ -104,6 +104,7 @@ const Clientes = async ({
                     hasNextPage={end < clientes.length}
                     hasPrevPage={start > 0}
                     hasLength={clientes.length}
+                    url="clientes"
                 />
             </BoxFooter>
         </BoxMain>

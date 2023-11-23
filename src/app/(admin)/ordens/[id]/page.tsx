@@ -1,6 +1,7 @@
 import { BoxHeader, BoxMain } from '@/components/boxes';
 import BackButton from "@/components/buttons/BackButton";
 import AddOrdemForm from "@/components/form/ordens/AddOrdemForm";
+import EditOrdemForm from "@/components/form/ordens/EditOrdemForm";
 import React from 'react';
 
 export function async() { }
@@ -17,14 +18,14 @@ async function getOrdem(id: any) {
 }
 
 const EditOrdem = async ({ params }: { params: { id: number } }) => {
-    const { Ordem } = await getOrdem(params.id);
-
+    const { ordem } = await getOrdem(params.id);
+console.log('Ordem', ordem);
     return (
         <BoxMain>
             <BoxHeader>
                 <BackButton label={"Voltar"} path={"/ordens"} />
             </BoxHeader>
-            <AddOrdemForm Ordem={Ordem} />
+            <EditOrdemForm ordem={ordem} />
         </BoxMain>
     );
 };

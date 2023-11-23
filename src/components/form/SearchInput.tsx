@@ -2,8 +2,10 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from 'react'
 import { IoSearch } from "react-icons/io5";
-
-const SearchInput = () => {
+    interface InputSearchProps {
+        placeHolder: string;
+    }
+const SearchInput = ({placeHolder}: InputSearchProps) => {
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
 
@@ -12,6 +14,7 @@ const SearchInput = () => {
         const encodeSearchQuery = encodeURI(searchQuery);
         router.push(`/clientes/search?q=${encodeSearchQuery}`);
     };
+
 
     return (
         <div className="w-full md:w-1/3">
@@ -22,7 +25,7 @@ const SearchInput = () => {
                         value={searchQuery}
                         onChange={(event) => setSearchQuery(event.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pr-10 p-2"
-                        placeholder="Buscar cliente"
+                        placeholder={placeHolder}
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         <button

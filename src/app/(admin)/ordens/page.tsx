@@ -48,8 +48,8 @@ const Ordens = async ({
         <BoxMain>
             <BoxHeader>
                 {/* <SearchForm data={ordens} /> */}
-                <SearchInput />
-                <NewButton label={'Novo cliente'} path={'/ordens/add'} />
+                <SearchInput placeHolder="Buscar ordem" />
+                <NewButton label={'Nova ordem'} path={'/ordens/add'} />
             </BoxHeader>
             <BoxContent>
                 <Table>
@@ -71,20 +71,21 @@ const Ordens = async ({
                                 <TableCell className="pl-4 text-gray-700 font-medium">
                                     {ordem?.id}
                                 </TableCell>
-                                <TableCell>{ordem?.cliente_id}</TableCell>
-                                <TableCell>{ordem?.telefone}</TableCell>
+                                <TableCell>{ordem?.clientes?.nome}</TableCell>
+                                <TableCell>{ordem?.clientes?.telefone}</TableCell>
                                 <TableCell className="pr-4">
-                                    {moment(ordem?.createdAt).format(
-                                        'DD/MM/YYYY',
-                                        )}
-                                        <TableCell>{ordem?.status}</TableCell>
+                                    {moment(ordem?.createdAt).format('DD/MM/YYYY')}
+                                </TableCell>
+                                <TableCell>{ordem?.equipamento}</TableCell>
+                                <TableCell>{ordem?.status}</TableCell>
+                                <TableCell className="pr-4">
+                                    {
+                                        ordem?.status !== '1'
+                                            ? ''
+                                            : moment(ordem?.updatedAt).format('DD/MM/YYYY')
+                                    }
                                 </TableCell>
                                 <TableCell className="flex items-center justify-end pr-3 gap-2">
-                                    <OrderClient
-                                        label={'Ordens'}
-                                        path={`/ordens/${ordem?.id}`}
-                                        name='ordem'
-                                    />
                                     <EditButton
                                         label={'Editar'}
                                         path={`/ordens/${ordem?.id}`}
@@ -106,6 +107,7 @@ const Ordens = async ({
                     hasNextPage={end < ordens.length}
                     hasPrevPage={start > 0}
                     hasLength={ordens.length}
+                    url="ordens"
                 />
             </BoxFooter>
         </BoxMain>

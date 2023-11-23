@@ -39,7 +39,7 @@ const SearchPage = () => {
   return (
     <BoxMain>
       <BoxHeader>
-        <SearchInput />
+        <SearchInput placeHolder={"Buscar cliente"} />
         <div className="text-base text-gray-500 font-semibold">
           {messages}
         </div>

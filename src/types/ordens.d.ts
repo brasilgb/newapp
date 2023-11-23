@@ -1,7 +1,7 @@
 import { string } from "zod"
 
 export interface OrdensProps {
-    id: string;
+    id: number;
     cliente_id: string;
     equipamento: string;
     modelo: string;
@@ -9,7 +9,7 @@ export interface OrdensProps {
     defeito: string;
     estado: string;
     acessorios: string;
-    orcamento: string;
+    orcamento: number;
     descorcamento: string;
     detalhes: string;
     pecas: string;
@@ -23,8 +23,14 @@ export interface OrdensProps {
     entrega: string;
     dtentrega: string;
     tecnico: string;
-    status: string;
+    status: number;
     envioemail: string;
-    observacoes: string;
+    obs: string;
     imagens: string[];
+    clientes:string[{
+        nome: string;
+        telefone: string;
+    }];
+    createdAt: Date;
+    updatedAt: Date;
 }

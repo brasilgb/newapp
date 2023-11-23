@@ -7,12 +7,14 @@ interface PaginationControlsProps {
     hasNextPage: boolean;
     hasPrevPage: boolean;
     hasLength: number;
+    url: string;
 }
 
 const PaginationControls: FC<PaginationControlsProps> = ({
     hasNextPage,
     hasPrevPage,
     hasLength,
+    url,
 }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -26,7 +28,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
                 className="text-gray-600 py-1.5 px-3 text-sm"
                 disabled={!hasPrevPage}
                 onClick={() => {
-                    router.push(`/clientes?page=${Number(page) - 1}`);
+                    router.push(`/${url}?page=${Number(page) - 1}`);
                 }}
             >
                 Anterior
@@ -40,7 +42,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
                 className="text-gray-600 py-1.5 px-3 text-sm"
                 disabled={!hasNextPage}
                 onClick={() => {
-                    router.push(`/clientes?page=${Number(page) + 1}`);
+                    router.push(`/${url}?page=${Number(page) + 1}`);
                 }}
             >
                 Próximo

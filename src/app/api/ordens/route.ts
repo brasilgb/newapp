@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
         let json_response = {
             status: true,
-            message: 'Cliente cadastrado com sucesso',
+            message: 'Ordem cadastrada com sucesso',
             ordem,
         };
         return new NextResponse(JSON.stringify(json_response), {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         if (error.code === 'P2002') {
             let err = {
                 status: false,
-                message: 'Já existe ordem com este CPF',
+                message: '',
                 ordem: [],
             };
             return new NextResponse(JSON.stringify(err), {
