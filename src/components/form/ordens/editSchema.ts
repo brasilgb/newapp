@@ -9,7 +9,7 @@ export const ordensEditSchema = z.object({
     estado: z.string(),
     acessorios: z.string(),
     orcamento: z.string(),
-    desorcamneto: z.string(),
+    descorcamento: z.string(),
     detalhes: z.string(),
     pecas: z.string(),
     valpecas: z.string(),
